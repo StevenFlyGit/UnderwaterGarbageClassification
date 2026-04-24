@@ -10,7 +10,6 @@ from ultralytics import YOLO
 
 # 首次运行此行代码时，系统会自动下载 yolov8m.pt 到当前目录
 model = YOLO("yolov8m.pt")
-model.predict
 
 
 # 进行预测，参数详见：https://docs.ultralytics.com/modes/predict/#参数说明
@@ -64,7 +63,11 @@ def predict_images_in_folder(model, folder_path):
         # print(f"root: {root}")
         # print(f"dirs: {dirs}")
         # print(f"files: {files}")
-        if (len(dirs) != 0):
+        # print(f"Processing folder: {root}, number of files: {len(files)}")
+        # for file in files:
+        #     print(f"File: {file}")
+
+        if (len(files) == 0):
             continue
 
         print(f"Processing folder: {root}")
@@ -72,7 +75,7 @@ def predict_images_in_folder(model, folder_path):
         relative_path = os.path.relpath(root, folder_path)
         print(f"Relative path: {relative_path}")
         save_dir = os.path.join('runs/detect/', relative_path) # 预测结果保存的目录
-        model.predict(source=root, save=True, conf=0.25, show=False, save_txt=True, save_conf=True,
+        model.predict(source=root, save=True, conf=0.25, show=False, save_txt=True, save_conf=False,
                               line_width=3, show_labels=True, show_conf=True,
                               save_dir=save_dir, exist_ok=True, project=save_dir,
                               device='cuda:0' if torch.cuda.is_available() else 'cpu',
