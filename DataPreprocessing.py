@@ -9,7 +9,7 @@ print(x);
 from ultralytics import YOLO
 
 # 首次运行此行代码时，系统会自动下载 yolov8m.pt 到当前目录
-model = YOLO("yolov8m.pt")
+model = YOLO("./models/yolov8m.pt")
 
 
 # 进行预测，参数详见：https://docs.ultralytics.com/modes/predict/#参数说明
@@ -93,7 +93,7 @@ def predict_images_in_folder(model, folder_path):
 # main函数，程序入口
 def main():
     print("Starting prediction...")
-    folder_path = r'E:\StevenWork\UnderwaterGarbageClassification\dataset'
+    folder_path = r'./dataset' # 当前文件夹下的dataset文件夹路径
     predict_images_in_folder(model, folder_path)
 
 # 判断当前文件是否被直接运行（而非被导入）
