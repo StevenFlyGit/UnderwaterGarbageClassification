@@ -114,7 +114,7 @@ def convert(labels_dir, images_dir, classes_file, output, exts):
 
     categories = []
     for i, name in enumerate(classes):
-        categories.append({'id': i + 1, 'name': name})
+        categories.append({'id': i, 'name': name})
 
     coco = {
         'images': images,
@@ -130,14 +130,20 @@ def convert(labels_dir, images_dir, classes_file, output, exts):
 
 def parse_args():
     p = argparse.ArgumentParser(description='Convert YOLO txt labels to COCO json')
-    p.add_argument('--labels-dir', default='./dataset/splitData/labels/train', help='目录，包含 YOLO txt 标签')
-    p.add_argument('--images-dir', default='./dataset/splitData/images/train', help='图片根目录，递归搜索对应图像')
+    p.add_argument('--train-labels-dir', default='./dataset/splitData/labels/train', help='训练集 coco json 文件路径，包含图片信息和标注信息')
+    p.add_argument('--train-images-dir', default='./dataset/splitData/images/train', help='训练集图片根目录，递归搜索对应图像')
+    p.add_argument('--val-labels-dir', default='./dataset/splitData/labels/val', help='验证集 coco json 文件路径，包含图片信息和标注信息')
+    p.add_argument('--val-images-dir', default='./dataset/splitData/images/val', help='验证集图片根目录，递归搜索对应图像')
     p.add_argument('--classes-file', default='./dataset/classes.txt', help='每行一个类别名的文件')
-    p.add_argument('--output', default='annotationsCocoTrain.json', help='输出 COCO json 文件路径')
+    p.add_argument('--train-output', default='annotationsCocoTrain.json', help='输出 训练集 COCO json 文件路径')
+    p.add_argument('--val-output', default='annotationsCocoVal.json', help='输出 验证集 COCO json 文件路径')
     p.add_argument('--exts', nargs='+', default=['.jpg', '.jpeg', '.png'], help='可识别的图片后缀')
     return p.parse_args()
 
 
 if __name__ == '__main__':
     args = parse_args()
-    convert(args.labels_dir, args.images_dir, args.classes_file, args.output, args.exts)
+    # 生成训练集 COCO json
+    convert(args.train_labels_dir, args.train_images_dir, args.classes_file, args.train_output, args.exts)
+    # 生成验证集 COCO json
+    convert(args.val_labels_dir, args.val_images_dir, args.classes_file, args.val_output, args.exts)
