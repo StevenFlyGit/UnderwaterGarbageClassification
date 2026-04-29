@@ -7,6 +7,10 @@ import uvicorn
 from mmengine.config import Config
 from mmdet.apis import init_detector, inference_detector
 
+import torch
+torch.set_num_threads(2) # 云服务器上使用，本地调试可注释
+# 限制 PyTorch 使用的线程数，避免在 CPU 上运行时过度占用资源导致系统卡顿。根据你的 CPU 核心数和实际需求调整这个数字
+
 # 异常问题记录
 # 这个 KeyError: 'YOLODetector is not in the mmdet::model registry' 错误是 MMLab 系列框架中非常经典的问题。
 # 这个错误的根本原因是 MMYOLO 模块没有正确注册到 MMDectection 的模型注册表中，导致在加载配置文件时找不到 YOLODetector 这个类。
@@ -45,6 +49,8 @@ print("正在初始化模型...")
 model = init_detector(cfg, CHECKPOINT_PATH, device=DEVICE)
 print("模型初始化成功！")
 
+# 提取出类别列表
+class_names = model.dataset_meta.get('classes', [])
 
 app = FastAPI(title="海洋垃圾识别系统 API")
 
@@ -103,8 +109,14 @@ async def predict(file: UploadFile = File(...)):
     # 只返回置信度大于 0.3 的目标
     keep = scores > 0.3
     for score, label, bbox in zip(scores[keep], labels[keep], bboxes[keep]):
+
+        # 通过索引直接获取名称
+        label_id = int(label)
+        label_name = class_names[label_id] if label_id < len(class_names) else "Unknown"
+
         output.append({
-            "class_id": int(label),
+            "class_id": label_id,
+            "class_name": label_name, # 返回类别对应的名称
             "confidence": round(float(score), 4),
             "bbox": [round(float(x), 2) for x in bbox]
         })
