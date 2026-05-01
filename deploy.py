@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from mmengine.config import Config
@@ -21,7 +22,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 # --- 配置区 ---
 # 请确保路径指向你目前表现最好的模型权重文件和正确的配置文件
-CONFIG_PATH = 'configs/yolov8/ocean_trash.py'
+CONFIG_PATH = 'configs/yolov8/ocean_trash_infer.py'
 CHECKPOINT_PATH = 'work_dirs/ocean_trash/best_coco_bbox_mAP_epoch_50.pth'
 DEVICE = 'cuda:0' # 如果服务器没显卡则改为 'cpu'
 
@@ -50,9 +51,18 @@ model = init_detector(cfg, CHECKPOINT_PATH, device=DEVICE)
 print("模型初始化成功！")
 
 # 提取出类别列表
-class_names = model.dataset_meta.get('classes', [])
+class_names = model.dataset_meta.get('classes', []) # 第二个参数是默认值，如果没有 'classes' 键则返回空列表
 
 app = FastAPI(title="海洋垃圾识别系统 API")
+
+# CORS 配置 - 根据需要调整 allow_origins 列表
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 或者设置为具体域名列表，例如 ["https://example.com"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # 如何用curl命令测试文件上传接口：
 # curl -X POST "http://localhost:8000/predict" -H "accept: application/json" -H "Content-Type: multipart/form-data" -F "file=@/path/to/your/image.jpg"
@@ -71,10 +81,12 @@ async def predict(file: UploadFile = File(...)):
     
     # 2. 模型推理
     # out_dir 设置为空，我们直接在内存中处理结果
+    print('模型推理')
     results = inference_detector(model, img) 
 
     # 3. 解析结果
     # inference_detector 返回的是 DetDataSample（或列表），其预测信息在 .pred_instances
+    print('解析结果')
     det_sample = results[0] if isinstance(results, (list, tuple)) else results
 
     pred_instances = getattr(det_sample, 'pred_instances', None) # 安全地获取 pred_instances，避免属性错误
@@ -86,6 +98,7 @@ async def predict(file: UploadFile = File(...)):
         return {"status": "success", "data": output}
 
     # 安全地提取 boxes/scores/labels，兼容 Tensor/ndarray/InstanceData
+    print('转为numpy')
     def to_numpy(x):
         try:
             return x.numpy()
@@ -98,6 +111,7 @@ async def predict(file: UploadFile = File(...)):
                 pass
             return np.array(x)
 
+    print('解析numpy，构造返回体')
     try:
         bboxes = to_numpy(pred_instances.bboxes)
         scores = to_numpy(pred_instances.scores)
@@ -109,7 +123,7 @@ async def predict(file: UploadFile = File(...)):
     # 只返回置信度大于 0.3 的目标
     keep = scores > 0.3
     for score, label, bbox in zip(scores[keep], labels[keep], bboxes[keep]):
-
+        
         # 通过索引直接获取名称
         label_id = int(label)
         label_name = class_names[label_id] if label_id < len(class_names) else "Unknown"
@@ -120,7 +134,8 @@ async def predict(file: UploadFile = File(...)):
             "confidence": round(float(score), 4),
             "bbox": [round(float(x), 2) for x in bbox]
         })
-            
+    
+    print('返回数据')
     return {"status": "success", "data": output}
 
 if __name__ == "__main__":
