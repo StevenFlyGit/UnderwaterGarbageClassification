@@ -27,6 +27,9 @@ build/
 #vue&npm
 node_modules/
 
+#VsCode
+.vscode/
+
 
 #Python
 
