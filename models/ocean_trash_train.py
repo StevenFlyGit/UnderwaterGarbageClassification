@@ -46,6 +46,26 @@ train_cfg = dict(
     val_interval=10 # 每10轮验证一次
 )
 
+# ======================== 修复学习率接管问题 ======================
+
+# 必须使用 _delete_=True 来彻底删除父配置文件中 YOLOv5ParamSchedulerHook 的残留参数
+# 否则会触发 TypeError: ParamSchedulerHook() takes no arguments
+default_hooks = dict(
+    param_scheduler=dict(type='ParamSchedulerHook', _delete_=True)
+)
+# 要让列表形式的自定义 param_scheduler 真正在每一轮生效，
+# 我们需要将更新学习率的钩子替换回 MMEngine 原生的标准钩子。
+# 也就是把它设为 dict(type='ParamSchedulerHook')。
+# 这样，标准钩子每当训练到新阶段时，就会自动去读取您写好的预热和余弦退火配置。
+
+# 标准的 ParamSchedulerHook 本身非常纯粹，它的逻辑是直接去配置文件根目录找 
+# param_scheduler 变量，因此它初始化时不需要（也不允许）传递复杂的业务参数。
+
+
+# 显式声明作用域
+default_scope = 'mmyolo'
+
+# 自定义的 param_scheduler 才会真正生效
 param_scheduler = [
     # 第一部分：预热阶段 (Warmup)
     dict(

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-root = Path(r"E:\StevenWork\UnderwaterGarbageClassification\dataset\splitData")
+root = Path(r"E:\StevenWork\已脱敏水下垃圾-水下&陆地照片")
 target_text = "水下垃圾照片 "
 
 renamed_count = 0
