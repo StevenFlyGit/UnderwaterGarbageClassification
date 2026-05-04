@@ -1,0 +1,1978 @@
+(xedu) PS E:\StevenWork\mmyolo> python tools/train.py configs/yolov8/ocean_trash_train.py
+Loaded 13 classes: ('beer bottle', 'tire', 'plastic shell', 'gunny sack', 'plastic bottle', 'can', 'fishing gear', 'ointment', 'plastic bag', 'plastic packaging bag', 'glove', 'ground cage', 'fishing net')
+===== ocean_trash.py configuration summary =====
+ num_classes = 13
+ max_epochs = 200
+ train_dataloader.batch_size = 30
+ base_lr = N/A
+ load_from = E:\StevenWork\UnderwaterGarbageClassification\models\yolov8_s_mask-refine_syncbn_fast_8xb16-500e_coco_20230216_095938-ce3c1b3f.pth
+===============================================
+05/03 20:59:34 - mmengine - WARNING - Failed to search registry with scope "mmyolo" in the "log_processor" registry tree. As a workaround, the current "log_processor" registry in "mmengine" is used to build instance. This may cause unexpected failure when running the built modules. Please check whether "mmyolo" is a correct scope, or whether the registry is initialized.
+05/03 20:59:35 - mmengine - INFO -
+------------------------------------------------------------
+System environment:
+    sys.platform: win32
+    Python: 3.10.20 | packaged by Anaconda, Inc. | (main, Mar 11 2026, 17:42:35) [MSC v.1942 64 bit (AMD64)]
+    CUDA available: True
+    MUSA available: False
+    numpy_random_seed: 1830270790
+    GPU 0: NVIDIA RTX 4000 Ada Generation
+    CUDA_HOME: C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.2
+    NVCC: Cuda compilation tools, release 12.2, V12.2.91
+    GCC: n/a
+    PyTorch: 2.0.1+cu118
+    PyTorch compiling details: PyTorch built with:
+  - C++ Version: 199711
+  - MSVC 193431937
+  - Intel(R) Math Kernel Library Version 2020.0.2 Product Build 20200624 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v2.7.3 (Git Hash 6dbeffbae1f23cbbeae17adb7b5b13f1f37c080e)
+  - OpenMP 2019
+  - LAPACK is enabled (usually provided by MKL)
+  - CPU capability usage: AVX2
+  - CUDA Runtime 11.8
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_80,code=sm_80;-gencode;arch=compute_86,code=sm_86;-gencode;arch=compute_90,code=sm_90;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 8.7
+  - Magma 2.5.4
+  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, CUDA_VERSION=11.8, CUDNN_VERSION=8.7.0, CXX_COMPILER=C:/actions-runner/_work/pytorch/pytorch/builder/windows/tmp_bin/sccache-cl.exe, CXX_FLAGS=/DWIN32 /D_WINDOWS /GR /EHsc /w /bigobj /FS -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DUSE_FBGEMM -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, TORCH_DISABLE_GPU_ASSERTS=OFF, TORCH_VERSION=2.0.1, USE_CUDA=ON, USE_CUDNN=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=OFF, USE_NNPACK=OFF, USE_OPENMP=ON, USE_ROCM=OFF,
+
+    TorchVision: 0.15.2+cu118
+    OpenCV: 4.13.0
+    MMEngine: 0.10.7
+
+Runtime environment:
+    cudnn_benchmark: True
+    mp_cfg: {'mp_start_method': 'fork', 'opencv_num_threads': 0}
+    dist_cfg: {'backend': 'nccl'}
+    seed: 1830270790
+    Distributed launcher: none
+    Distributed training: False
+    GPU number: 1
+------------------------------------------------------------
+
+05/03 20:59:36 - mmengine - INFO - Config:
+_backend_args = None
+_multiscale_resize_transforms = [
+    dict(
+        transforms=[
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+    dict(
+        transforms=[
+            dict(scale=(
+                320,
+                320,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    320,
+                    320,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+    dict(
+        transforms=[
+            dict(scale=(
+                960,
+                960,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    960,
+                    960,
+                ),
+                type='LetterResize'),
+        ],
+        type='Compose'),
+]
+affine_scale = 0.5
+albu_train_transforms = [
+    dict(p=0.01, type='Blur'),
+    dict(p=0.01, type='MedianBlur'),
+    dict(p=0.01, type='ToGray'),
+    dict(p=0.01, type='CLAHE'),
+]
+backend_args = None
+base_lr = 0.01
+batch_shapes_cfg = None
+class_name = (
+    'beer bottle',
+    'tire',
+    'plastic shell',
+    'gunny sack',
+    'plastic bottle',
+    'can',
+    'fishing gear',
+    'ointment',
+    'plastic bag',
+    'plastic packaging bag',
+    'glove',
+    'ground cage',
+    'fishing net',
+)
+close_mosaic_epochs = 10
+custom_hooks = [
+    dict(
+        ema_type='ExpMomentumEMA',
+        momentum=0.0001,
+        priority=49,
+        strict_load=False,
+        type='EMAHook',
+        update_buffers=True),
+    dict(
+        switch_epoch=490,
+        switch_pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=True,
+                pad_val=dict(img=114.0),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(
+                border_val=(
+                    114,
+                    114,
+                    114,
+                ),
+                max_aspect_ratio=100,
+                max_rotate_degree=0.0,
+                max_shear_degree=0.0,
+                scaling_ratio_range=(
+                    0.5,
+                    1.5,
+                ),
+                type='YOLOv5RandomAffine'),
+            dict(
+                bbox_params=dict(
+                    format='pascal_voc',
+                    label_fields=[
+                        'gt_bboxes_labels',
+                        'gt_ignore_flags',
+                    ],
+                    type='BboxParams'),
+                keymap=dict(gt_bboxes='bboxes', img='image'),
+                transforms=[
+                    dict(p=0.01, type='Blur'),
+                    dict(p=0.01, type='MedianBlur'),
+                    dict(p=0.01, type='ToGray'),
+                    dict(p=0.01, type='CLAHE'),
+                ],
+                type='mmdet.Albu'),
+            dict(type='YOLOv5HSVRandomAug'),
+            dict(prob=0.5, type='mmdet.RandomFlip'),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'flip',
+                    'flip_direction',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        type='mmdet.PipelineSwitchHook'),
+]
+data_root = 'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\'
+dataset_type = 'YOLOv5CocoDataset'
+deepen_factor = 0.33
+default_hooks = dict(
+    checkpoint=dict(
+        interval=10, max_keep_ckpts=2, save_best='auto',
+        type='CheckpointHook'),
+    logger=dict(interval=50, type='LoggerHook'),
+    param_scheduler=dict(type='ParamSchedulerHook'),
+    sampler_seed=dict(type='DistSamplerSeedHook'),
+    timer=dict(type='IterTimerHook'),
+    visualization=dict(type='mmdet.DetVisualizationHook'))
+default_scope = 'mmyolo'
+env_cfg = dict(
+    cudnn_benchmark=True,
+    dist_cfg=dict(backend='nccl'),
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0))
+img_scale = (
+    640,
+    640,
+)
+img_scales = [
+    (
+        640,
+        640,
+    ),
+    (
+        320,
+        320,
+    ),
+    (
+        960,
+        960,
+    ),
+]
+last_stage_out_channels = 1024
+last_transform = [
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+launcher = 'none'
+load_from = 'E:\\StevenWork\\UnderwaterGarbageClassification\\models\\yolov8_s_mask-refine_syncbn_fast_8xb16-500e_coco_20230216_095938-ce3c1b3f.pth'
+log_level = 'INFO'
+log_processor = dict(by_epoch=True, type='LogProcessor', window_size=50)
+loss_bbox_weight = 7.5
+loss_cls_weight = 0.5
+loss_dfl_weight = 0.375
+lr_factor = 0.01
+max_aspect_ratio = 100
+max_epochs = 200
+max_keep_ckpts = 2
+metainfo = dict(
+    classes=(
+        'beer bottle',
+        'tire',
+        'plastic shell',
+        'gunny sack',
+        'plastic bottle',
+        'can',
+        'fishing gear',
+        'ointment',
+        'plastic bag',
+        'plastic packaging bag',
+        'glove',
+        'ground cage',
+        'fishing net',
+    ))
+model = dict(
+    backbone=dict(
+        act_cfg=dict(inplace=True, type='SiLU'),
+        arch='P5',
+        deepen_factor=0.33,
+        last_stage_out_channels=1024,
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        type='YOLOv8CSPDarknet',
+        widen_factor=0.5),
+    bbox_head=dict(
+        bbox_coder=dict(type='DistancePointBBoxCoder'),
+        head_module=dict(
+            act_cfg=dict(inplace=True, type='SiLU'),
+            featmap_strides=[
+                8,
+                16,
+                32,
+            ],
+            in_channels=[
+                256,
+                512,
+                1024,
+            ],
+            norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+            num_classes=13,
+            reg_max=16,
+            type='YOLOv8HeadModule',
+            widen_factor=0.5),
+        loss_bbox=dict(
+            bbox_format='xyxy',
+            iou_mode='ciou',
+            loss_weight=7.5,
+            reduction='sum',
+            return_iou=False,
+            type='IoULoss'),
+        loss_cls=dict(
+            loss_weight=0.5,
+            reduction='none',
+            type='mmdet.CrossEntropyLoss',
+            use_sigmoid=True),
+        loss_dfl=dict(
+            loss_weight=0.375,
+            reduction='mean',
+            type='mmdet.DistributionFocalLoss'),
+        prior_generator=dict(
+            offset=0.5, strides=[
+                8,
+                16,
+                32,
+            ], type='mmdet.MlvlPointGenerator'),
+        type='YOLOv8Head'),
+    data_preprocessor=dict(
+        bgr_to_rgb=True,
+        mean=[
+            0.0,
+            0.0,
+            0.0,
+        ],
+        std=[
+            255.0,
+            255.0,
+            255.0,
+        ],
+        type='YOLOv5DetDataPreprocessor'),
+    neck=dict(
+        act_cfg=dict(inplace=True, type='SiLU'),
+        deepen_factor=0.33,
+        in_channels=[
+            256,
+            512,
+            1024,
+        ],
+        norm_cfg=dict(eps=0.001, momentum=0.03, type='BN'),
+        num_csp_blocks=3,
+        out_channels=[
+            256,
+            512,
+            1024,
+        ],
+        type='YOLOv8PAFPN',
+        widen_factor=0.5),
+    test_cfg=dict(
+        max_per_img=300,
+        multi_label=True,
+        nms=dict(iou_threshold=0.7, type='nms'),
+        nms_pre=30000,
+        score_thr=0.001),
+    train_cfg=dict(
+        assigner=dict(
+            alpha=0.5,
+            beta=6.0,
+            eps=1e-09,
+            num_classes=13,
+            topk=10,
+            type='BatchTaskAlignedAssigner',
+            use_ciou=True)),
+    type='YOLODetector')
+model_test_cfg = dict(
+    max_per_img=300,
+    multi_label=True,
+    nms=dict(iou_threshold=0.7, type='nms'),
+    nms_pre=30000,
+    score_thr=0.001)
+norm_cfg = dict(eps=0.001, momentum=0.03, type='BN')
+num_classes = 13
+num_det_layers = 3
+optim_wrapper = dict(
+    clip_grad=dict(max_norm=10.0),
+    constructor='YOLOv5OptimizerConstructor',
+    optimizer=dict(
+        batch_size_per_gpu=16,
+        lr=0.01,
+        momentum=0.937,
+        nesterov=True,
+        type='SGD',
+        weight_decay=0.0005),
+    type='OptimWrapper')
+param_scheduler = [
+    dict(begin=0, by_epoch=True, end=15, start_factor=0.0001, type='LinearLR'),
+    dict(
+        T_max=200,
+        begin=15,
+        by_epoch=True,
+        convert_to_iter_based=True,
+        end=200,
+        eta_min=0.0001,
+        type='CosineAnnealingLR'),
+]
+persistent_workers = True
+pre_transform = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+]
+resume = False
+save_epoch_intervals = 10
+strides = [
+    8,
+    16,
+    32,
+]
+tal_alpha = 0.5
+tal_beta = 6.0
+tal_topk = 10
+tb = 30
+test_cfg = dict(type='TestLoop')
+test_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        ann_file='annotations\\annotationsCocoVal.json',
+        batch_shapes_cfg=None,
+        data_prefix=dict(img='images\\val\\'),
+        data_root=
+        'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\',
+        metainfo=dict(
+            classes=(
+                'beer bottle',
+                'tire',
+                'plastic shell',
+                'gunny sack',
+                'plastic bottle',
+                'can',
+                'fishing gear',
+                'ointment',
+                'plastic bag',
+                'plastic packaging bag',
+                'glove',
+                'ground cage',
+                'fishing net',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='YOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=2,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+test_evaluator = dict(
+    ann_file=
+    'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\annotations\\annotationsCocoVal.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+test_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(scale=(
+        640,
+        640,
+    ), type='YOLOv5KeepRatioResize'),
+    dict(
+        allow_scale_up=False,
+        pad_val=dict(img=114),
+        scale=(
+            640,
+            640,
+        ),
+        type='LetterResize'),
+    dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'scale_factor',
+            'pad_param',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+train_ann_file = 'annotations\\annotationsCocoTrain.json'
+train_batch_size_per_gpu = 16
+train_cfg = dict(
+    dynamic_intervals=[
+        (
+            490,
+            1,
+        ),
+    ],
+    max_epochs=200,
+    type='EpochBasedTrainLoop',
+    val_interval=10)
+train_data_prefix = 'images\\train\\'
+train_dataloader = dict(
+    batch_size=30,
+    collate_fn=dict(type='yolov5_collate'),
+    dataset=dict(
+        ann_file='annotations\\annotationsCocoTrain.json',
+        data_prefix=dict(img='images\\train\\'),
+        data_root=
+        'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\',
+        filter_cfg=dict(filter_empty_gt=False, min_size=32),
+        metainfo=dict(
+            classes=(
+                'beer bottle',
+                'tire',
+                'plastic shell',
+                'gunny sack',
+                'plastic bottle',
+                'can',
+                'fishing gear',
+                'ointment',
+                'plastic bag',
+                'plastic packaging bag',
+                'glove',
+                'ground cage',
+                'fishing net',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', with_bbox=True),
+            dict(
+                img_scale=(
+                    640,
+                    640,
+                ),
+                pad_val=114.0,
+                pre_transform=[
+                    dict(backend_args=None, type='LoadImageFromFile'),
+                    dict(type='LoadAnnotations', with_bbox=True),
+                ],
+                type='Mosaic'),
+            dict(
+                border=(
+                    -320,
+                    -320,
+                ),
+                border_val=(
+                    114,
+                    114,
+                    114,
+                ),
+                max_aspect_ratio=100,
+                max_rotate_degree=0.0,
+                max_shear_degree=0.0,
+                scaling_ratio_range=(
+                    0.5,
+                    1.5,
+                ),
+                type='YOLOv5RandomAffine'),
+            dict(
+                bbox_params=dict(
+                    format='pascal_voc',
+                    label_fields=[
+                        'gt_bboxes_labels',
+                        'gt_ignore_flags',
+                    ],
+                    type='BboxParams'),
+                keymap=dict(gt_bboxes='bboxes', img='image'),
+                transforms=[
+                    dict(p=0.01, type='Blur'),
+                    dict(p=0.01, type='MedianBlur'),
+                    dict(p=0.01, type='ToGray'),
+                    dict(p=0.01, type='CLAHE'),
+                ],
+                type='mmdet.Albu'),
+            dict(type='YOLOv5HSVRandomAug'),
+            dict(prob=0.5, type='mmdet.RandomFlip'),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'flip',
+                    'flip_direction',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        type='YOLOv5CocoDataset'),
+    num_workers=8,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=True, type='DefaultSampler'))
+train_num_workers = 8
+train_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(
+        img_scale=(
+            640,
+            640,
+        ),
+        pad_val=114.0,
+        pre_transform=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(type='LoadAnnotations', with_bbox=True),
+        ],
+        type='Mosaic'),
+    dict(
+        border=(
+            -320,
+            -320,
+        ),
+        border_val=(
+            114,
+            114,
+            114,
+        ),
+        max_aspect_ratio=100,
+        max_rotate_degree=0.0,
+        max_shear_degree=0.0,
+        scaling_ratio_range=(
+            0.5,
+            1.5,
+        ),
+        type='YOLOv5RandomAffine'),
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+train_pipeline_stage2 = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(type='LoadAnnotations', with_bbox=True),
+    dict(scale=(
+        640,
+        640,
+    ), type='YOLOv5KeepRatioResize'),
+    dict(
+        allow_scale_up=True,
+        pad_val=dict(img=114.0),
+        scale=(
+            640,
+            640,
+        ),
+        type='LetterResize'),
+    dict(
+        border_val=(
+            114,
+            114,
+            114,
+        ),
+        max_aspect_ratio=100,
+        max_rotate_degree=0.0,
+        max_shear_degree=0.0,
+        scaling_ratio_range=(
+            0.5,
+            1.5,
+        ),
+        type='YOLOv5RandomAffine'),
+    dict(
+        bbox_params=dict(
+            format='pascal_voc',
+            label_fields=[
+                'gt_bboxes_labels',
+                'gt_ignore_flags',
+            ],
+            type='BboxParams'),
+        keymap=dict(gt_bboxes='bboxes', img='image'),
+        transforms=[
+            dict(p=0.01, type='Blur'),
+            dict(p=0.01, type='MedianBlur'),
+            dict(p=0.01, type='ToGray'),
+            dict(p=0.01, type='CLAHE'),
+        ],
+        type='mmdet.Albu'),
+    dict(type='YOLOv5HSVRandomAug'),
+    dict(prob=0.5, type='mmdet.RandomFlip'),
+    dict(
+        meta_keys=(
+            'img_id',
+            'img_path',
+            'ori_shape',
+            'img_shape',
+            'flip',
+            'flip_direction',
+        ),
+        type='mmdet.PackDetInputs'),
+]
+tta_model = dict(
+    tta_cfg=dict(max_per_img=300, nms=dict(iou_threshold=0.65, type='nms')),
+    type='mmdet.DetTTAModel')
+tta_pipeline = [
+    dict(backend_args=None, type='LoadImageFromFile'),
+    dict(
+        transforms=[
+            [
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            640,
+                            640,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                640,
+                                640,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            320,
+                            320,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                320,
+                                320,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+                dict(
+                    transforms=[
+                        dict(scale=(
+                            960,
+                            960,
+                        ), type='YOLOv5KeepRatioResize'),
+                        dict(
+                            allow_scale_up=False,
+                            pad_val=dict(img=114),
+                            scale=(
+                                960,
+                                960,
+                            ),
+                            type='LetterResize'),
+                    ],
+                    type='Compose'),
+            ],
+            [
+                dict(prob=1.0, type='mmdet.RandomFlip'),
+                dict(prob=0.0, type='mmdet.RandomFlip'),
+            ],
+            [
+                dict(type='mmdet.LoadAnnotations', with_bbox=True),
+            ],
+            [
+                dict(
+                    meta_keys=(
+                        'img_id',
+                        'img_path',
+                        'ori_shape',
+                        'img_shape',
+                        'scale_factor',
+                        'pad_param',
+                        'flip',
+                        'flip_direction',
+                    ),
+                    type='mmdet.PackDetInputs'),
+            ],
+        ],
+        type='TestTimeAug'),
+]
+val_ann_file = 'annotations\\annotationsCocoVal.json'
+val_batch_size_per_gpu = 1
+val_cfg = dict(type='ValLoop')
+val_data_prefix = 'images\\val\\'
+val_dataloader = dict(
+    batch_size=1,
+    dataset=dict(
+        ann_file='annotations\\annotationsCocoVal.json',
+        batch_shapes_cfg=None,
+        data_prefix=dict(img='images\\val\\'),
+        data_root=
+        'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\',
+        metainfo=dict(
+            classes=(
+                'beer bottle',
+                'tire',
+                'plastic shell',
+                'gunny sack',
+                'plastic bottle',
+                'can',
+                'fishing gear',
+                'ointment',
+                'plastic bag',
+                'plastic packaging bag',
+                'glove',
+                'ground cage',
+                'fishing net',
+            )),
+        pipeline=[
+            dict(backend_args=None, type='LoadImageFromFile'),
+            dict(scale=(
+                640,
+                640,
+            ), type='YOLOv5KeepRatioResize'),
+            dict(
+                allow_scale_up=False,
+                pad_val=dict(img=114),
+                scale=(
+                    640,
+                    640,
+                ),
+                type='LetterResize'),
+            dict(_scope_='mmdet', type='LoadAnnotations', with_bbox=True),
+            dict(
+                meta_keys=(
+                    'img_id',
+                    'img_path',
+                    'ori_shape',
+                    'img_shape',
+                    'scale_factor',
+                    'pad_param',
+                ),
+                type='mmdet.PackDetInputs'),
+        ],
+        test_mode=True,
+        type='YOLOv5CocoDataset'),
+    drop_last=False,
+    num_workers=2,
+    persistent_workers=True,
+    pin_memory=True,
+    sampler=dict(shuffle=False, type='DefaultSampler'))
+val_evaluator = dict(
+    ann_file=
+    'E:\\StevenWork\\UnderwaterGarbageClassification\\dataset\\splitData\\annotations\\annotationsCocoVal.json',
+    metric='bbox',
+    proposal_nums=(
+        100,
+        1,
+        10,
+    ),
+    type='mmdet.CocoMetric')
+val_interval_stage2 = 1
+val_num_workers = 2
+vis_backends = [
+    dict(type='LocalVisBackend'),
+]
+visualizer = dict(
+    name='visualizer',
+    type='mmdet.DetLocalVisualizer',
+    vis_backends=[
+        dict(type='LocalVisBackend'),
+    ])
+weight_decay = 0.0005
+widen_factor = 0.5
+work_dir = './work_dirs\\ocean_trash_train'
+
+05/03 20:59:38 - mmengine - INFO - Distributed training is not used, all SyncBatchNorm (SyncBN) layers in the model will be automatically reverted to BatchNormXd layers if they are used.
+05/03 20:59:38 - mmengine - INFO - Hooks will be executed in the following order:
+before_run:
+(VERY_HIGH   ) RuntimeInfoHook
+(49          ) EMAHook
+(BELOW_NORMAL) LoggerHook
+ --------------------
+after_load_checkpoint:
+(49          ) EMAHook
+ --------------------
+before_train:
+(VERY_HIGH   ) RuntimeInfoHook
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+(VERY_LOW    ) CheckpointHook
+ --------------------
+before_train_epoch:
+(VERY_HIGH   ) RuntimeInfoHook
+(NORMAL      ) IterTimerHook
+(NORMAL      ) DistSamplerSeedHook
+(NORMAL      ) PipelineSwitchHook
+ --------------------
+before_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook
+(NORMAL      ) IterTimerHook
+ --------------------
+after_train_iter:
+(VERY_HIGH   ) RuntimeInfoHook
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+(BELOW_NORMAL) LoggerHook
+(LOW         ) ParamSchedulerHook
+(VERY_LOW    ) CheckpointHook
+ --------------------
+after_train_epoch:
+(NORMAL      ) IterTimerHook
+(LOW         ) ParamSchedulerHook
+(VERY_LOW    ) CheckpointHook
+ --------------------
+before_val:
+(VERY_HIGH   ) RuntimeInfoHook
+ --------------------
+before_val_epoch:
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+ --------------------
+before_val_iter:
+(NORMAL      ) IterTimerHook
+ --------------------
+after_val_iter:
+(NORMAL      ) IterTimerHook
+(NORMAL      ) DetVisualizationHook
+(BELOW_NORMAL) LoggerHook
+ --------------------
+after_val_epoch:
+(VERY_HIGH   ) RuntimeInfoHook
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+(BELOW_NORMAL) LoggerHook
+(LOW         ) ParamSchedulerHook
+(VERY_LOW    ) CheckpointHook
+ --------------------
+after_val:
+(VERY_HIGH   ) RuntimeInfoHook
+ --------------------
+before_save_checkpoint:
+(49          ) EMAHook
+ --------------------
+after_train:
+(VERY_HIGH   ) RuntimeInfoHook
+(VERY_LOW    ) CheckpointHook
+ --------------------
+before_test:
+(VERY_HIGH   ) RuntimeInfoHook
+ --------------------
+before_test_epoch:
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+ --------------------
+before_test_iter:
+(NORMAL      ) IterTimerHook
+ --------------------
+after_test_iter:
+(NORMAL      ) IterTimerHook
+(NORMAL      ) DetVisualizationHook
+(BELOW_NORMAL) LoggerHook
+ --------------------
+after_test_epoch:
+(VERY_HIGH   ) RuntimeInfoHook
+(49          ) EMAHook
+(NORMAL      ) IterTimerHook
+(BELOW_NORMAL) LoggerHook
+ --------------------
+after_test:
+(VERY_HIGH   ) RuntimeInfoHook
+ --------------------
+after_run:
+(BELOW_NORMAL) LoggerHook
+ --------------------
+E:\App\anaconda3\envs\xedu\lib\site-packages\albumentations\core\composition.py:331: UserWarning: Got processor for bboxes, but no transform to process it.
+  self._set_keys()
+loading annotations into memory...
+Done (t=0.00s)
+creating index...
+index created!
+05/03 20:59:39 - mmengine - INFO - Optimizer groups: 63 .bias, 63 conv.weight, 57 other
+loading annotations into memory...
+Done (t=0.00s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.00s)
+creating index...
+index created!
+Loads checkpoint by local backend from path: E:\StevenWork\UnderwaterGarbageClassification\models\yolov8_s_mask-refine_syncbn_fast_8xb16-500e_coco_20230216_095938-ce3c1b3f.pth
+The model and loaded state dict do not match exactly
+
+size mismatch for bbox_head.head_module.cls_preds.0.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.0.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+size mismatch for bbox_head.head_module.cls_preds.1.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.1.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+size mismatch for bbox_head.head_module.cls_preds.2.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.2.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+The model and loaded state dict do not match exactly
+
+size mismatch for bbox_head.head_module.cls_preds.0.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.0.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+size mismatch for bbox_head.head_module.cls_preds.1.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.1.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+size mismatch for bbox_head.head_module.cls_preds.2.2.weight: copying a param with shape torch.Size([80, 128, 1, 1]) from checkpoint, the shape in current model is torch.Size([13, 128, 1, 1]).
+size mismatch for bbox_head.head_module.cls_preds.2.2.bias: copying a param with shape torch.Size([80]) from checkpoint, the shape in current model is torch.Size([13]).
+05/03 20:59:41 - mmengine - INFO - Load checkpoint from E:\StevenWork\UnderwaterGarbageClassification\models\yolov8_s_mask-refine_syncbn_fast_8xb16-500e_coco_20230216_095938-ce3c1b3f.pth
+05/03 20:59:41 - mmengine - WARNING - "FileClient" will be deprecated in future. Please use io functions in https://mmengine.readthedocs.io/en/latest/api/fileio.html#file-io
+05/03 20:59:41 - mmengine - WARNING - "HardDiskBackend" is the alias of "LocalBackend" and the former will be deprecated in future.
+05/03 20:59:41 - mmengine - INFO - Checkpoints will be saved to E:\StevenWork\mmyolo\work_dirs\ocean_trash_train.
+E:\App\anaconda3\envs\xedu\lib\site-packages\torch\functional.py:504: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ..\aten\src\ATen\native\TensorShape.cpp:3484.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+05/03 21:00:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:00:32 - mmengine - INFO - Epoch(train)   [1][6/6]  base_lr: 1.0000e-06 lr: 1.0000e-06  eta: 2:51:35  time: 8.6226  data_time: 6.8971  memory: 14752  grad_norm: 1800.7337  loss: 264.3873  loss_cls: 171.2729  loss_bbox: 47.5771  loss_dfl: 45.5373
+05/03 21:00:38 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:00:38 - mmengine - INFO - Epoch(train)   [2][6/6]  base_lr: 7.1521e-04 lr: 7.1521e-04  eta: 1:35:04  time: 4.8020  data_time: 3.7548  memory: 11016  grad_norm: 1494.5010  loss: 250.0328  loss_cls: 157.6251  loss_bbox: 47.4788  loss_dfl: 44.9289
+05/03 21:00:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:00:44 - mmengine - INFO - Epoch(train)   [3][6/6]  base_lr: 1.4294e-03 lr: 1.4294e-03  eta: 1:09:31  time: 3.5295  data_time: 2.7118  memory: 11016  grad_norm: 1292.3509  loss: 230.4252  loss_cls: 141.7783  loss_bbox: 44.9155  loss_dfl: 43.7314
+05/03 21:00:51 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:00:51 - mmengine - INFO - Epoch(train)   [4][6/6]  base_lr: 2.1436e-03 lr: 2.1436e-03  eta: 0:57:06  time: 2.9138  data_time: 2.2109  memory: 11016  grad_norm: 1134.9299  loss: 212.2132  loss_cls: 127.0407  loss_bbox: 43.0206  loss_dfl: 42.1519
+05/03 21:00:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:00:57 - mmengine - INFO - Epoch(train)   [5][6/6]  base_lr: 2.8579e-03 lr: 2.8579e-03  eta: 0:49:38  time: 2.5457  data_time: 1.9072  memory: 10990  grad_norm: 1039.0692  loss: 197.8493  loss_cls: 115.2486  loss_bbox: 41.4925  loss_dfl: 41.1083
+05/03 21:01:03 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:03 - mmengine - INFO - Epoch(train)   [6][6/6]  base_lr: 3.5721e-03 lr: 3.5721e-03  eta: 0:44:17  time: 2.2831  data_time: 1.6876  memory: 11040  grad_norm: 976.3381  loss: 186.0472  loss_cls: 105.6240  loss_bbox: 40.2724  loss_dfl: 40.1508
+05/03 21:01:08 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:08 - mmengine - INFO - Epoch(train)   [7][6/6]  base_lr: 4.2863e-03 lr: 4.2863e-03  eta: 0:40:22  time: 2.0919  data_time: 1.5291  memory: 11040  grad_norm: 920.9413  loss: 177.4678  loss_cls: 98.5195  loss_bbox: 39.4521  loss_dfl: 39.4961
+05/03 21:01:15 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:15 - mmengine - INFO - Epoch(train)   [8][6/6]  base_lr: 5.0005e-03 lr: 5.0005e-03  eta: 0:37:40  time: 1.9619  data_time: 1.4224  memory: 11016  grad_norm: 877.6726  loss: 170.0705  loss_cls: 92.3337  loss_bbox: 38.7989  loss_dfl: 38.9379
+05/03 21:01:21 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:21 - mmengine - INFO - Epoch(train)   [9][6/6]  base_lr: 5.7147e-03 lr: 5.7147e-03  eta: 0:35:24  time: 1.0196  data_time: 0.6125  memory: 11065  grad_norm: 739.8271  loss: 152.5491  loss_cls: 78.2548  loss_bbox: 36.8960  loss_dfl: 37.3983
+05/03 21:01:27 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:27 - mmengine - INFO - Epoch(train)  [10][6/6]  base_lr: 6.4289e-03 lr: 6.4289e-03  eta: 0:33:43  time: 0.9866  data_time: 0.6225  memory: 11040  grad_norm: 640.7728  loss: 136.5912  loss_cls: 65.1692  loss_bbox: 35.2652  loss_dfl: 36.1569
+05/03 21:01:27 - mmengine - INFO - Saving checkpoint at 10 epochs
+05/03 21:01:35 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.04s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.066
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.134
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.087
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.318
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.066
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.119
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.296
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.384
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.379
+05/03 21:01:35 - mmengine - INFO - bbox_mAP_copypaste: 0.066 0.134 0.087 -1.000 0.318 0.066
+05/03 21:01:35 - mmengine - INFO - Epoch(val) [10][18/18]    coco/bbox_mAP: 0.0660  coco/bbox_mAP_50: 0.1340  coco/bbox_mAP_75: 0.0870  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.3180  coco/bbox_mAP_l: 0.0660  data_time: 0.2585  time: 0.3355
+05/03 21:01:36 - mmengine - INFO - The best checkpoint with 0.0660 coco/bbox_mAP at 10 epoch is saved to best_coco_bbox_mAP_epoch_10.pth.
+05/03 21:01:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:44 - mmengine - INFO - Epoch(train)  [11][6/6]  base_lr: 7.1431e-03 lr: 7.1431e-03  eta: 0:32:18  time: 0.9959  data_time: 0.6280  memory: 11017  grad_norm: 578.1579  loss: 125.4665  loss_cls: 56.2199  loss_bbox: 34.2030  loss_dfl: 35.0435
+05/03 21:01:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:50 - mmengine - INFO - Epoch(train)  [12][6/6]  base_lr: 7.8574e-03 lr: 7.8574e-03  eta: 0:31:05  time: 0.9917  data_time: 0.6240  memory: 11117  grad_norm: 545.6492  loss: 118.6316  loss_cls: 50.5508  loss_bbox: 33.5859  loss_dfl: 34.4949
+05/03 21:01:56 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:01:56 - mmengine - INFO - Epoch(train)  [13][6/6]  base_lr: 8.5716e-03 lr: 8.5716e-03  eta: 0:29:59  time: 0.9841  data_time: 0.6189  memory: 10993  grad_norm: 526.9493  loss: 115.2749  loss_cls: 47.5911  loss_bbox: 33.4154  loss_dfl: 34.2684
+05/03 21:02:03 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:03 - mmengine - INFO - Epoch(train)  [14][6/6]  base_lr: 9.2858e-03 lr: 9.2858e-03  eta: 0:29:04  time: 0.9918  data_time: 0.6264  memory: 11092  grad_norm: 506.7463  loss: 113.2262  loss_cls: 45.5670  loss_bbox: 33.4151  loss_dfl: 34.2441
+05/03 21:02:09 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:09 - mmengine - INFO - Epoch(train)  [15][6/6]  base_lr: 1.0000e-02 lr: 1.0000e-02  eta: 0:28:17  time: 1.0043  data_time: 0.6383  memory: 11142  grad_norm: 483.0776  loss: 111.4903  loss_cls: 43.8895  loss_bbox: 33.4766  loss_dfl: 34.1242
+05/03 21:02:16 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:16 - mmengine - INFO - Epoch(train)  [16][6/6]  base_lr: 9.9996e-03 lr: 9.9996e-03  eta: 0:27:39  time: 1.0122  data_time: 0.6463  memory: 11042  grad_norm: 471.1772  loss: 110.5532  loss_cls: 42.9979  loss_bbox: 33.4523  loss_dfl: 34.1031
+05/03 21:02:22 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:22 - mmengine - INFO - Epoch(train)  [17][6/6]  base_lr: 9.9979e-03 lr: 9.9979e-03  eta: 0:26:57  time: 1.0135  data_time: 0.6448  memory: 11042  grad_norm: 460.0151  loss: 110.7583  loss_cls: 42.8619  loss_bbox: 33.6819  loss_dfl: 34.2145
+05/03 21:02:27 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:27 - mmengine - INFO - Epoch(train)  [18][6/6]  base_lr: 9.9951e-03 lr: 9.9951e-03  eta: 0:26:18  time: 1.0015  data_time: 0.6298  memory: 11092  grad_norm: 445.0154  loss: 110.8516  loss_cls: 42.8207  loss_bbox: 33.7884  loss_dfl: 34.2425
+05/03 21:02:33 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:34 - mmengine - INFO - Epoch(train)  [19][6/6]  base_lr: 9.9910e-03 lr: 9.9910e-03  eta: 0:25:45  time: 0.9966  data_time: 0.6279  memory: 11042  grad_norm: 442.5922  loss: 111.4258  loss_cls: 42.8403  loss_bbox: 34.1009  loss_dfl: 34.4846
+05/03 21:02:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:40 - mmengine - INFO - Epoch(train)  [20][6/6]  base_lr: 9.9857e-03 lr: 9.9857e-03  eta: 0:25:19  time: 1.0065  data_time: 0.6339  memory: 11042  grad_norm: 430.9125  loss: 112.2085  loss_cls: 43.0013  loss_bbox: 34.4646  loss_dfl: 34.7426
+05/03 21:02:40 - mmengine - INFO - Saving checkpoint at 20 epochs
+05/03 21:02:42 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.010
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.016
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.014
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.011
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.003
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.069
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.094
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.099
+05/03 21:02:42 - mmengine - INFO - bbox_mAP_copypaste: 0.010 0.016 0.014 -1.000 0.000 0.011
+05/03 21:02:42 - mmengine - INFO - Epoch(val) [20][18/18]    coco/bbox_mAP: 0.0100  coco/bbox_mAP_50: 0.0160  coco/bbox_mAP_75: 0.0140  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.0000  coco/bbox_mAP_l: 0.0110  data_time: 0.0144  time: 0.0229
+05/03 21:02:48 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:48 - mmengine - INFO - Epoch(train)  [21][6/6]  base_lr: 9.9792e-03 lr: 9.9792e-03  eta: 0:24:52  time: 1.0087  data_time: 0.6327  memory: 11042  grad_norm: 431.4736  loss: 112.3275  loss_cls: 42.8397  loss_bbox: 34.6302  loss_dfl: 34.8576
+05/03 21:02:54 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:02:54 - mmengine - INFO - Epoch(train)  [22][6/6]  base_lr: 9.9715e-03 lr: 9.9715e-03  eta: 0:24:25  time: 1.0049  data_time: 0.6279  memory: 10967  grad_norm: 422.7776  loss: 112.2855  loss_cls: 42.8005  loss_bbox: 34.6410  loss_dfl: 34.8440
+05/03 21:03:01 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:01 - mmengine - INFO - Epoch(train)  [23][6/6]  base_lr: 9.9626e-03 lr: 9.9626e-03  eta: 0:24:01  time: 1.0027  data_time: 0.6238  memory: 11042  grad_norm: 412.3410  loss: 112.6685  loss_cls: 42.7561  loss_bbox: 34.9317  loss_dfl: 34.9808
+05/03 21:03:07 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:07 - mmengine - INFO - Epoch(train)  [24][6/6]  base_lr: 9.9524e-03 lr: 9.9524e-03  eta: 0:23:37  time: 0.9885  data_time: 0.6072  memory: 10967  grad_norm: 399.6127  loss: 112.8017  loss_cls: 42.7503  loss_bbox: 34.9706  loss_dfl: 35.0808
+05/03 21:03:13 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:13 - mmengine - INFO - Epoch(train)  [25][6/6]  base_lr: 9.9411e-03 lr: 9.9411e-03  eta: 0:23:16  time: 0.9923  data_time: 0.6105  memory: 10993  grad_norm: 384.4598  loss: 112.1304  loss_cls: 42.1055  loss_bbox: 34.9052  loss_dfl: 35.1197
+05/03 21:03:19 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:19 - mmengine - INFO - Epoch(train)  [26][6/6]  base_lr: 9.9285e-03 lr: 9.9285e-03  eta: 0:22:55  time: 0.9985  data_time: 0.6195  memory: 11018  grad_norm: 369.7559  loss: 111.2842  loss_cls: 41.4818  loss_bbox: 34.7939  loss_dfl: 35.0085
+05/03 21:03:24 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:24 - mmengine - INFO - Epoch(train)  [27][6/6]  base_lr: 9.9147e-03 lr: 9.9147e-03  eta: 0:22:31  time: 0.9842  data_time: 0.6061  memory: 10967  grad_norm: 357.0803  loss: 110.3625  loss_cls: 40.6828  loss_bbox: 34.6608  loss_dfl: 35.0189
+05/03 21:03:30 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:30 - mmengine - INFO - Epoch(train)  [28][6/6]  base_lr: 9.8998e-03 lr: 9.8998e-03  eta: 0:22:10  time: 0.9647  data_time: 0.5899  memory: 11018  grad_norm: 346.3728  loss: 109.2706  loss_cls: 40.0655  loss_bbox: 34.4293  loss_dfl: 34.7758
+05/03 21:03:36 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:36 - mmengine - INFO - Epoch(train)  [29][6/6]  base_lr: 9.8836e-03 lr: 9.8836e-03  eta: 0:21:55  time: 0.9687  data_time: 0.5953  memory: 10943  grad_norm: 328.5062  loss: 108.0142  loss_cls: 39.1495  loss_bbox: 34.2770  loss_dfl: 34.5878
+05/03 21:03:42 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:42 - mmengine - INFO - Epoch(train)  [30][6/6]  base_lr: 9.8662e-03 lr: 9.8662e-03  eta: 0:21:37  time: 0.9667  data_time: 0.5969  memory: 10993  grad_norm: 311.0679  loss: 106.2501  loss_cls: 37.9135  loss_bbox: 33.9491  loss_dfl: 34.3875
+05/03 21:03:42 - mmengine - INFO - Saving checkpoint at 30 epochs
+05/03 21:03:44 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.046
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.076
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.047
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.007
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.052
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.114
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.226
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.249
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.100
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.265
+05/03 21:03:44 - mmengine - INFO - bbox_mAP_copypaste: 0.046 0.076 0.047 -1.000 0.007 0.052
+05/03 21:03:45 - mmengine - INFO - Epoch(val) [30][18/18]    coco/bbox_mAP: 0.0460  coco/bbox_mAP_50: 0.0760  coco/bbox_mAP_75: 0.0470  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.0070  coco/bbox_mAP_l: 0.0520  data_time: 0.0138  time: 0.0230
+05/03 21:03:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:50 - mmengine - INFO - Epoch(train)  [31][6/6]  base_lr: 9.8477e-03 lr: 9.8477e-03  eta: 0:21:19  time: 0.9603  data_time: 0.5918  memory: 10967  grad_norm: 300.0687  loss: 104.8017  loss_cls: 36.9815  loss_bbox: 33.6556  loss_dfl: 34.1646
+05/03 21:03:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:03:57 - mmengine - INFO - Epoch(train)  [32][6/6]  base_lr: 9.8280e-03 lr: 9.8280e-03  eta: 0:21:03  time: 0.9585  data_time: 0.5917  memory: 10993  grad_norm: 292.4139  loss: 103.9089  loss_cls: 36.1616  loss_bbox: 33.5657  loss_dfl: 34.1816
+05/03 21:04:03 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:03 - mmengine - INFO - Epoch(train)  [33][6/6]  base_lr: 9.8071e-03 lr: 9.8071e-03  eta: 0:20:49  time: 0.9598  data_time: 0.5958  memory: 11067  grad_norm: 285.5457  loss: 102.7795  loss_cls: 35.5024  loss_bbox: 33.3165  loss_dfl: 33.9606
+05/03 21:04:09 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:09 - mmengine - INFO - Epoch(train)  [34][6/6]  base_lr: 9.7850e-03 lr: 9.7850e-03  eta: 0:20:35  time: 0.9607  data_time: 0.5951  memory: 10993  grad_norm: 277.0208  loss: 102.0663  loss_cls: 35.0918  loss_bbox: 33.0914  loss_dfl: 33.8831
+05/03 21:04:15 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:15 - mmengine - INFO - Epoch(train)  [35][6/6]  base_lr: 9.7617e-03 lr: 9.7617e-03  eta: 0:20:21  time: 0.9743  data_time: 0.6088  memory: 10993  grad_norm: 273.5166  loss: 101.3869  loss_cls: 34.6290  loss_bbox: 32.9647  loss_dfl: 33.7931
+05/03 21:04:21 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:21 - mmengine - INFO - Epoch(train)  [36][6/6]  base_lr: 9.7373e-03 lr: 9.7373e-03  eta: 0:20:06  time: 0.9722  data_time: 0.6072  memory: 10993  grad_norm: 271.3390  loss: 101.2630  loss_cls: 34.7500  loss_bbox: 32.7131  loss_dfl: 33.8000
+05/03 21:04:27 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:27 - mmengine - INFO - Epoch(train)  [37][6/6]  base_lr: 9.7117e-03 lr: 9.7117e-03  eta: 0:19:54  time: 0.9705  data_time: 0.6034  memory: 11092  grad_norm: 265.1241  loss: 100.1036  loss_cls: 34.1551  loss_bbox: 32.3499  loss_dfl: 33.5986
+05/03 21:04:33 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:33 - mmengine - INFO - Epoch(train)  [38][6/6]  base_lr: 9.6850e-03 lr: 9.6850e-03  eta: 0:19:41  time: 0.9744  data_time: 0.6083  memory: 11117  grad_norm: 262.1630  loss: 100.1516  loss_cls: 34.4068  loss_bbox: 32.2140  loss_dfl: 33.5308
+05/03 21:04:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:40 - mmengine - INFO - Epoch(train)  [39][6/6]  base_lr: 9.6571e-03 lr: 9.6571e-03  eta: 0:19:31  time: 0.9894  data_time: 0.6254  memory: 11067  grad_norm: 255.0559  loss: 98.8644  loss_cls: 33.7584  loss_bbox: 31.8091  loss_dfl: 33.2969
+05/03 21:04:46 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:46 - mmengine - INFO - Epoch(train)  [40][6/6]  base_lr: 9.6281e-03 lr: 9.6281e-03  eta: 0:19:19  time: 0.9953  data_time: 0.6330  memory: 11018  grad_norm: 248.5760  loss: 97.5140  loss_cls: 33.2441  loss_bbox: 31.4205  loss_dfl: 32.8494
+05/03 21:04:46 - mmengine - INFO - Saving checkpoint at 40 epochs
+05/03 21:04:48 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.033
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.072
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.022
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.425
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.036
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.056
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.199
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.223
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.600
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.207
+05/03 21:04:48 - mmengine - INFO - bbox_mAP_copypaste: 0.033 0.072 0.022 -1.000 0.425 0.036
+05/03 21:04:48 - mmengine - INFO - Epoch(val) [40][18/18]    coco/bbox_mAP: 0.0330  coco/bbox_mAP_50: 0.0720  coco/bbox_mAP_75: 0.0220  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4250  coco/bbox_mAP_l: 0.0360  data_time: 0.0117  time: 0.0238
+05/03 21:04:55 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:04:55 - mmengine - INFO - Epoch(train)  [41][6/6]  base_lr: 9.5980e-03 lr: 9.5980e-03  eta: 0:19:09  time: 1.0001  data_time: 0.6360  memory: 11018  grad_norm: 250.8831  loss: 97.3339  loss_cls: 33.1028  loss_bbox: 31.3287  loss_dfl: 32.9024
+05/03 21:05:02 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:02 - mmengine - INFO - Epoch(train)  [42][6/6]  base_lr: 9.5668e-03 lr: 9.5668e-03  eta: 0:18:57  time: 0.9953  data_time: 0.6315  memory: 11018  grad_norm: 250.1621  loss: 97.0640  loss_cls: 32.9937  loss_bbox: 31.3118  loss_dfl: 32.7585
+05/03 21:05:08 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:08 - mmengine - INFO - Epoch(train)  [43][6/6]  base_lr: 9.5344e-03 lr: 9.5344e-03  eta: 0:18:46  time: 0.9970  data_time: 0.6296  memory: 10993  grad_norm: 243.5803  loss: 95.8326  loss_cls: 32.3518  loss_bbox: 30.9781  loss_dfl: 32.5027
+05/03 21:05:14 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:14 - mmengine - INFO - Epoch(train)  [44][6/6]  base_lr: 9.5009e-03 lr: 9.5009e-03  eta: 0:18:36  time: 1.0126  data_time: 0.6434  memory: 10993  grad_norm: 236.2922  loss: 94.9077  loss_cls: 31.6572  loss_bbox: 30.8100  loss_dfl: 32.4405
+05/03 21:05:20 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:20 - mmengine - INFO - Epoch(train)  [45][6/6]  base_lr: 9.4664e-03 lr: 9.4664e-03  eta: 0:18:25  time: 1.0047  data_time: 0.6391  memory: 11067  grad_norm: 234.2997  loss: 94.2421  loss_cls: 31.2022  loss_bbox: 30.6461  loss_dfl: 32.3938
+05/03 21:05:26 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:26 - mmengine - INFO - Epoch(train)  [46][6/6]  base_lr: 9.4307e-03 lr: 9.4307e-03  eta: 0:18:13  time: 0.9966  data_time: 0.6297  memory: 11042  grad_norm: 231.1050  loss: 93.4943  loss_cls: 30.6948  loss_bbox: 30.5846  loss_dfl: 32.2150
+05/03 21:05:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:32 - mmengine - INFO - Epoch(train)  [47][6/6]  base_lr: 9.3939e-03 lr: 9.3939e-03  eta: 0:18:03  time: 0.9881  data_time: 0.6196  memory: 11018  grad_norm: 228.3555  loss: 92.6871  loss_cls: 30.2161  loss_bbox: 30.3530  loss_dfl: 32.1181
+05/03 21:05:38 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:38 - mmengine - INFO - Epoch(train)  [48][6/6]  base_lr: 9.3561e-03 lr: 9.3561e-03  eta: 0:17:52  time: 0.9830  data_time: 0.6140  memory: 10993  grad_norm: 225.9249  loss: 92.2477  loss_cls: 29.9523  loss_bbox: 30.2216  loss_dfl: 32.0738
+05/03 21:05:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:44 - mmengine - INFO - Epoch(train)  [49][6/6]  base_lr: 9.3173e-03 lr: 9.3173e-03  eta: 0:17:43  time: 0.9820  data_time: 0.6142  memory: 11042  grad_norm: 220.6066  loss: 91.3566  loss_cls: 29.5572  loss_bbox: 29.9121  loss_dfl: 31.8873
+05/03 21:05:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:05:50 - mmengine - INFO - Epoch(train)  [50][6/6]  base_lr: 9.2773e-03 lr: 9.2773e-03  eta: 0:17:33  time: 0.9849  data_time: 0.6169  memory: 11117  grad_norm: 211.2274  loss: 89.6467  loss_cls: 28.6102  loss_bbox: 29.4796  loss_dfl: 31.5570
+05/03 21:05:50 - mmengine - INFO - Saving checkpoint at 50 epochs
+05/03 21:05:52 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.03s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.077
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.165
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.071
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.315
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.074
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.096
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.241
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.267
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.550
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.263
+05/03 21:05:52 - mmengine - INFO - bbox_mAP_copypaste: 0.077 0.165 0.071 -1.000 0.315 0.074
+05/03 21:05:52 - mmengine - INFO - Epoch(val) [50][18/18]    coco/bbox_mAP: 0.0770  coco/bbox_mAP_50: 0.1650  coco/bbox_mAP_75: 0.0710  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.3150  coco/bbox_mAP_l: 0.0740  data_time: 0.0153  time: 0.0240
+05/03 21:05:52 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_10.pth is removed
+05/03 21:05:54 - mmengine - INFO - The best checkpoint with 0.0770 coco/bbox_mAP at 50 epoch is saved to best_coco_bbox_mAP_epoch_50.pth.
+05/03 21:06:02 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:02 - mmengine - INFO - Epoch(train)  [51][6/6]  base_lr: 9.2364e-03 lr: 9.2364e-03  eta: 0:17:23  time: 0.9829  data_time: 0.6173  memory: 10993  grad_norm: 209.8523  loss: 89.3327  loss_cls: 28.2901  loss_bbox: 29.3984  loss_dfl: 31.6442
+05/03 21:06:08 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:08 - mmengine - INFO - Epoch(train)  [52][6/6]  base_lr: 9.1943e-03 lr: 9.1943e-03  eta: 0:17:14  time: 0.9817  data_time: 0.6163  memory: 11067  grad_norm: 208.6630  loss: 88.4430  loss_cls: 27.7850  loss_bbox: 29.2195  loss_dfl: 31.4384
+05/03 21:06:14 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:14 - mmengine - INFO - Epoch(train)  [53][6/6]  base_lr: 9.1513e-03 lr: 9.1513e-03  eta: 0:17:04  time: 0.9810  data_time: 0.6159  memory: 10993  grad_norm: 204.4662  loss: 88.0587  loss_cls: 27.5148  loss_bbox: 29.1931  loss_dfl: 31.3508
+05/03 21:06:20 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:20 - mmengine - INFO - Epoch(train)  [54][6/6]  base_lr: 9.1073e-03 lr: 9.1073e-03  eta: 0:16:55  time: 0.9875  data_time: 0.6207  memory: 11067  grad_norm: 202.7212  loss: 87.4515  loss_cls: 27.1479  loss_bbox: 29.0107  loss_dfl: 31.2929
+05/03 21:06:26 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:26 - mmengine - INFO - Epoch(train)  [55][6/6]  base_lr: 9.0622e-03 lr: 9.0622e-03  eta: 0:16:45  time: 0.9840  data_time: 0.6170  memory: 11092  grad_norm: 200.5013  loss: 87.3670  loss_cls: 27.0426  loss_bbox: 29.0518  loss_dfl: 31.2726
+05/03 21:06:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:32 - mmengine - INFO - Epoch(train)  [56][6/6]  base_lr: 9.0162e-03 lr: 9.0162e-03  eta: 0:16:36  time: 0.9889  data_time: 0.6222  memory: 11067  grad_norm: 196.3553  loss: 86.3720  loss_cls: 26.5138  loss_bbox: 28.7564  loss_dfl: 31.1019
+05/03 21:06:38 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:38 - mmengine - INFO - Epoch(train)  [57][6/6]  base_lr: 8.9692e-03 lr: 8.9692e-03  eta: 0:16:27  time: 0.9832  data_time: 0.6182  memory: 10993  grad_norm: 193.3902  loss: 85.8884  loss_cls: 26.2214  loss_bbox: 28.6772  loss_dfl: 30.9898
+05/03 21:06:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:44 - mmengine - INFO - Epoch(train)  [58][6/6]  base_lr: 8.9212e-03 lr: 8.9212e-03  eta: 0:16:18  time: 0.9819  data_time: 0.6196  memory: 10993  grad_norm: 192.7412  loss: 85.7230  loss_cls: 26.1760  loss_bbox: 28.5999  loss_dfl: 30.9471
+05/03 21:06:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:50 - mmengine - INFO - Epoch(train)  [59][6/6]  base_lr: 8.8723e-03 lr: 8.8723e-03  eta: 0:16:09  time: 0.9797  data_time: 0.6198  memory: 11018  grad_norm: 188.6815  loss: 84.7757  loss_cls: 25.7900  loss_bbox: 28.2844  loss_dfl: 30.7013
+05/03 21:06:56 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:06:56 - mmengine - INFO - Epoch(train)  [60][6/6]  base_lr: 8.8224e-03 lr: 8.8224e-03  eta: 0:16:00  time: 0.9724  data_time: 0.6121  memory: 10993  grad_norm: 183.7914  loss: 83.9692  loss_cls: 25.5870  loss_bbox: 27.9365  loss_dfl: 30.4457
+05/03 21:06:56 - mmengine - INFO - Saving checkpoint at 60 epochs
+05/03 21:06:58 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.02s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.091
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.177
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.068
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.253
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.094
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.119
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.232
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.232
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.300
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.243
+05/03 21:06:58 - mmengine - INFO - bbox_mAP_copypaste: 0.091 0.177 0.068 -1.000 0.253 0.094
+05/03 21:06:58 - mmengine - INFO - Epoch(val) [60][18/18]    coco/bbox_mAP: 0.0910  coco/bbox_mAP_50: 0.1770  coco/bbox_mAP_75: 0.0680  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.2530  coco/bbox_mAP_l: 0.0940  data_time: 0.0141  time: 0.0231
+05/03 21:06:58 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_50.pth is removed
+05/03 21:06:59 - mmengine - INFO - The best checkpoint with 0.0910 coco/bbox_mAP at 60 epoch is saved to best_coco_bbox_mAP_epoch_60.pth.
+05/03 21:07:07 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:07 - mmengine - INFO - Epoch(train)  [61][6/6]  base_lr: 8.7716e-03 lr: 8.7716e-03  eta: 0:15:51  time: 0.9753  data_time: 0.6150  memory: 11067  grad_norm: 182.2887  loss: 83.0308  loss_cls: 25.2606  loss_bbox: 27.5262  loss_dfl: 30.2440
+05/03 21:07:13 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:13 - mmengine - INFO - Epoch(train)  [62][6/6]  base_lr: 8.7199e-03 lr: 8.7199e-03  eta: 0:15:43  time: 0.9778  data_time: 0.6193  memory: 11067  grad_norm: 179.3641  loss: 82.2931  loss_cls: 25.0263  loss_bbox: 27.1795  loss_dfl: 30.0872
+05/03 21:07:19 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:19 - mmengine - INFO - Epoch(train)  [63][6/6]  base_lr: 8.6673e-03 lr: 8.6673e-03  eta: 0:15:35  time: 0.9828  data_time: 0.6226  memory: 11042  grad_norm: 173.8090  loss: 81.2602  loss_cls: 24.6243  loss_bbox: 26.7829  loss_dfl: 29.8530
+05/03 21:07:25 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:25 - mmengine - INFO - Epoch(train)  [64][6/6]  base_lr: 8.6137e-03 lr: 8.6137e-03  eta: 0:15:26  time: 0.9774  data_time: 0.6182  memory: 10993  grad_norm: 174.5494  loss: 81.0413  loss_cls: 24.5676  loss_bbox: 26.6659  loss_dfl: 29.8078
+05/03 21:07:31 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:31 - mmengine - INFO - Epoch(train)  [65][6/6]  base_lr: 8.5593e-03 lr: 8.5593e-03  eta: 0:15:18  time: 0.9752  data_time: 0.6164  memory: 10993  grad_norm: 173.7357  loss: 80.6365  loss_cls: 24.3503  loss_bbox: 26.5209  loss_dfl: 29.7653
+05/03 21:07:37 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:37 - mmengine - INFO - Epoch(train)  [66][6/6]  base_lr: 8.5041e-03 lr: 8.5041e-03  eta: 0:15:09  time: 0.9731  data_time: 0.6126  memory: 11042  grad_norm: 171.0337  loss: 79.7947  loss_cls: 23.9514  loss_bbox: 26.1953  loss_dfl: 29.6480
+05/03 21:07:43 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:43 - mmengine - INFO - Epoch(train)  [67][6/6]  base_lr: 8.4479e-03 lr: 8.4479e-03  eta: 0:15:01  time: 0.9757  data_time: 0.6110  memory: 11042  grad_norm: 165.6852  loss: 78.7429  loss_cls: 23.4954  loss_bbox: 25.7562  loss_dfl: 29.4913
+05/03 21:07:49 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:49 - mmengine - INFO - Epoch(train)  [68][6/6]  base_lr: 8.3910e-03 lr: 8.3910e-03  eta: 0:14:52  time: 0.9758  data_time: 0.6128  memory: 11018  grad_norm: 162.9675  loss: 77.9326  loss_cls: 22.9986  loss_bbox: 25.5003  loss_dfl: 29.4337
+05/03 21:07:55 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:07:55 - mmengine - INFO - Epoch(train)  [69][6/6]  base_lr: 8.3332e-03 lr: 8.3332e-03  eta: 0:14:44  time: 0.9710  data_time: 0.6080  memory: 11042  grad_norm: 163.7209  loss: 77.7153  loss_cls: 22.9219  loss_bbox: 25.3875  loss_dfl: 29.4059
+05/03 21:08:02 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:02 - mmengine - INFO - Epoch(train)  [70][6/6]  base_lr: 8.2746e-03 lr: 8.2746e-03  eta: 0:14:36  time: 0.9767  data_time: 0.6101  memory: 11042  grad_norm: 159.8555  loss: 77.2514  loss_cls: 22.6100  loss_bbox: 25.3349  loss_dfl: 29.3065
+05/03 21:08:02 - mmengine - INFO - Saving checkpoint at 70 epochs
+05/03 21:08:05 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.02s).
+Accumulating evaluation results...
+DONE (t=0.02s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.082
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.184
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.060
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.290
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.097
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.095
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.239
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.265
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.267
+05/03 21:08:05 - mmengine - INFO - bbox_mAP_copypaste: 0.082 0.184 0.060 -1.000 0.290 0.097
+05/03 21:08:05 - mmengine - INFO - Epoch(val) [70][18/18]    coco/bbox_mAP: 0.0820  coco/bbox_mAP_50: 0.1840  coco/bbox_mAP_75: 0.0600  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.2900  coco/bbox_mAP_l: 0.0970  data_time: 0.0091  time: 0.0237
+05/03 21:08:11 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:11 - mmengine - INFO - Epoch(train)  [71][6/6]  base_lr: 8.2152e-03 lr: 8.2152e-03  eta: 0:14:28  time: 0.9648  data_time: 0.6012  memory: 10993  grad_norm: 157.9134  loss: 76.5652  loss_cls: 22.2164  loss_bbox: 25.1612  loss_dfl: 29.1877
+05/03 21:08:17 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:17 - mmengine - INFO - Epoch(train)  [72][6/6]  base_lr: 8.1551e-03 lr: 8.1551e-03  eta: 0:14:20  time: 0.9711  data_time: 0.6057  memory: 10993  grad_norm: 156.7903  loss: 76.0772  loss_cls: 21.9086  loss_bbox: 25.0815  loss_dfl: 29.0870
+05/03 21:08:23 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:23 - mmengine - INFO - Epoch(train)  [73][6/6]  base_lr: 8.0941e-03 lr: 8.0941e-03  eta: 0:14:12  time: 0.9679  data_time: 0.6028  memory: 11067  grad_norm: 156.7202  loss: 75.4821  loss_cls: 21.7367  loss_bbox: 24.7955  loss_dfl: 28.9499
+05/03 21:08:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:29 - mmengine - INFO - Epoch(train)  [74][6/6]  base_lr: 8.0324e-03 lr: 8.0324e-03  eta: 0:14:04  time: 0.9761  data_time: 0.6115  memory: 11067  grad_norm: 155.8873  loss: 74.9999  loss_cls: 21.5062  loss_bbox: 24.6552  loss_dfl: 28.8385
+05/03 21:08:35 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:35 - mmengine - INFO - Epoch(train)  [75][6/6]  base_lr: 7.9700e-03 lr: 7.9700e-03  eta: 0:13:56  time: 0.9670  data_time: 0.6045  memory: 11018  grad_norm: 155.3880  loss: 75.2772  loss_cls: 21.5449  loss_bbox: 24.8469  loss_dfl: 28.8854
+05/03 21:08:41 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:41 - mmengine - INFO - Epoch(train)  [76][6/6]  base_lr: 7.9069e-03 lr: 7.9069e-03  eta: 0:13:49  time: 0.9743  data_time: 0.6082  memory: 11018  grad_norm: 156.3216  loss: 75.1996  loss_cls: 21.6845  loss_bbox: 24.7415  loss_dfl: 28.7736
+05/03 21:08:47 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:47 - mmengine - INFO - Epoch(train)  [77][6/6]  base_lr: 7.8430e-03 lr: 7.8430e-03  eta: 0:13:41  time: 0.9818  data_time: 0.6160  memory: 11092  grad_norm: 154.5701  loss: 74.9463  loss_cls: 21.5421  loss_bbox: 24.7199  loss_dfl: 28.6842
+05/03 21:08:53 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:08:53 - mmengine - INFO - Epoch(train)  [78][6/6]  base_lr: 7.7785e-03 lr: 7.7785e-03  eta: 0:13:33  time: 0.9721  data_time: 0.6082  memory: 10993  grad_norm: 153.4737  loss: 74.1762  loss_cls: 21.2177  loss_bbox: 24.4679  loss_dfl: 28.4906
+05/03 21:09:00 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:00 - mmengine - INFO - Epoch(train)  [79][6/6]  base_lr: 7.7133e-03 lr: 7.7133e-03  eta: 0:13:26  time: 0.9902  data_time: 0.6220  memory: 10993  grad_norm: 149.9626  loss: 73.5535  loss_cls: 21.0168  loss_bbox: 24.1945  loss_dfl: 28.3421
+05/03 21:09:07 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:07 - mmengine - INFO - Epoch(train)  [80][6/6]  base_lr: 7.6474e-03 lr: 7.6474e-03  eta: 0:13:20  time: 1.0062  data_time: 0.6358  memory: 11117  grad_norm: 150.1632  loss: 73.2569  loss_cls: 20.9461  loss_bbox: 23.9680  loss_dfl: 28.3428
+05/03 21:09:07 - mmengine - INFO - Saving checkpoint at 80 epochs
+05/03 21:09:09 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.05s).
+Accumulating evaluation results...
+DONE (t=0.03s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.095
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.231
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.069
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.100
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.101
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.243
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.246
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.237
+05/03 21:09:09 - mmengine - INFO - bbox_mAP_copypaste: 0.095 0.231 0.069 -1.000 0.500 0.100
+05/03 21:09:09 - mmengine - INFO - Epoch(val) [80][18/18]    coco/bbox_mAP: 0.0950  coco/bbox_mAP_50: 0.2310  coco/bbox_mAP_75: 0.0690  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.5000  coco/bbox_mAP_l: 0.1000  data_time: 0.0187  time: 0.0379
+05/03 21:09:09 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_60.pth is removed
+05/03 21:09:11 - mmengine - INFO - The best checkpoint with 0.0950 coco/bbox_mAP at 80 epoch is saved to best_coco_bbox_mAP_epoch_80.pth.
+05/03 21:09:21 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:21 - mmengine - INFO - Epoch(train)  [81][6/6]  base_lr: 7.5809e-03 lr: 7.5809e-03  eta: 0:13:15  time: 1.0453  data_time: 0.6773  memory: 11092  grad_norm: 147.8845  loss: 72.7085  loss_cls: 20.6557  loss_bbox: 23.8809  loss_dfl: 28.1718
+05/03 21:09:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:29 - mmengine - INFO - Epoch(train)  [82][6/6]  base_lr: 7.5138e-03 lr: 7.5138e-03  eta: 0:13:11  time: 1.0839  data_time: 0.7097  memory: 10993  grad_norm: 144.6434  loss: 71.8871  loss_cls: 20.2347  loss_bbox: 23.6065  loss_dfl: 28.0460
+05/03 21:09:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:40 - mmengine - INFO - Epoch(train)  [83][6/6]  base_lr: 7.4460e-03 lr: 7.4460e-03  eta: 0:13:10  time: 1.1848  data_time: 0.8022  memory: 11018  grad_norm: 143.2338  loss: 71.3915  loss_cls: 19.9649  loss_bbox: 23.4454  loss_dfl: 27.9813
+05/03 21:09:48 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:48 - mmengine - INFO - Epoch(train)  [84][6/6]  base_lr: 7.3777e-03 lr: 7.3777e-03  eta: 0:13:05  time: 1.2241  data_time: 0.8390  memory: 11067  grad_norm: 141.0487  loss: 70.4230  loss_cls: 19.4982  loss_bbox: 23.1024  loss_dfl: 27.8225
+05/03 21:09:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:09:57 - mmengine - INFO - Epoch(train)  [85][6/6]  base_lr: 7.3088e-03 lr: 7.3088e-03  eta: 0:13:01  time: 1.2808  data_time: 0.8897  memory: 11067  grad_norm: 141.3636  loss: 69.5525  loss_cls: 19.1657  loss_bbox: 22.8241  loss_dfl: 27.5627
+05/03 21:10:06 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:06 - mmengine - INFO - Epoch(train)  [86][6/6]  base_lr: 7.2393e-03 lr: 7.2393e-03  eta: 0:12:57  time: 1.3415  data_time: 0.9468  memory: 11018  grad_norm: 137.8614  loss: 69.0261  loss_cls: 18.9378  loss_bbox: 22.5997  loss_dfl: 27.4886
+05/03 21:10:15 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:15 - mmengine - INFO - Epoch(train)  [87][6/6]  base_lr: 7.1693e-03 lr: 7.1693e-03  eta: 0:12:53  time: 1.3785  data_time: 0.9828  memory: 10993  grad_norm: 137.7076  loss: 68.6435  loss_cls: 18.7502  loss_bbox: 22.4606  loss_dfl: 27.4327
+05/03 21:10:24 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:24 - mmengine - INFO - Epoch(train)  [88][6/6]  base_lr: 7.0988e-03 lr: 7.0988e-03  eta: 0:12:49  time: 1.4173  data_time: 1.0203  memory: 11042  grad_norm: 137.1368  loss: 68.0285  loss_cls: 18.4156  loss_bbox: 22.3363  loss_dfl: 27.2766
+05/03 21:10:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:32 - mmengine - INFO - Epoch(train)  [89][6/6]  base_lr: 7.0278e-03 lr: 7.0278e-03  eta: 0:12:43  time: 1.4202  data_time: 1.0149  memory: 11042  grad_norm: 135.8854  loss: 67.8567  loss_cls: 18.3975  loss_bbox: 22.1886  loss_dfl: 27.2706
+05/03 21:10:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:40 - mmengine - INFO - Epoch(train)  [90][6/6]  base_lr: 6.9562e-03 lr: 6.9562e-03  eta: 0:12:39  time: 1.4347  data_time: 1.0279  memory: 11018  grad_norm: 137.2234  loss: 67.6224  loss_cls: 18.3324  loss_bbox: 22.0744  loss_dfl: 27.2156
+05/03 21:10:40 - mmengine - INFO - Saving checkpoint at 90 epochs
+05/03 21:10:44 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.02s).
+Accumulating evaluation results...
+DONE (t=0.04s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.124
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.250
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.125
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.200
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.135
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.110
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.201
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.201
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.200
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.211
+05/03 21:10:44 - mmengine - INFO - bbox_mAP_copypaste: 0.124 0.250 0.125 -1.000 0.200 0.135
+05/03 21:10:44 - mmengine - INFO - Epoch(val) [90][18/18]    coco/bbox_mAP: 0.1240  coco/bbox_mAP_50: 0.2500  coco/bbox_mAP_75: 0.1250  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.2000  coco/bbox_mAP_l: 0.1350  data_time: 0.0222  time: 0.0401
+05/03 21:10:44 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_80.pth is removed
+05/03 21:10:46 - mmengine - INFO - The best checkpoint with 0.1240 coco/bbox_mAP at 90 epoch is saved to best_coco_bbox_mAP_epoch_90.pth.
+05/03 21:10:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:10:57 - mmengine - INFO - Epoch(train)  [91][6/6]  base_lr: 6.8843e-03 lr: 6.8843e-03  eta: 0:12:34  time: 1.3893  data_time: 0.9877  memory: 11018  grad_norm: 137.0487  loss: 67.3128  loss_cls: 18.2233  loss_bbox: 21.8650  loss_dfl: 27.2245
+05/03 21:11:05 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:05 - mmengine - INFO - Epoch(train)  [92][6/6]  base_lr: 6.8118e-03 lr: 6.8118e-03  eta: 0:12:29  time: 1.3950  data_time: 0.9934  memory: 11018  grad_norm: 136.6330  loss: 67.0791  loss_cls: 18.1298  loss_bbox: 21.8003  loss_dfl: 27.1490
+05/03 21:11:14 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:14 - mmengine - INFO - Epoch(train)  [93][6/6]  base_lr: 6.7389e-03 lr: 6.7389e-03  eta: 0:12:24  time: 1.3892  data_time: 0.9902  memory: 11067  grad_norm: 134.4406  loss: 66.7269  loss_cls: 17.9919  loss_bbox: 21.6290  loss_dfl: 27.1060
+05/03 21:11:23 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:23 - mmengine - INFO - Epoch(train)  [94][6/6]  base_lr: 6.6656e-03 lr: 6.6656e-03  eta: 0:12:19  time: 1.3803  data_time: 0.9825  memory: 10993  grad_norm: 133.2616  loss: 66.2416  loss_cls: 17.8621  loss_bbox: 21.3309  loss_dfl: 27.0487
+05/03 21:11:31 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:31 - mmengine - INFO - Epoch(train)  [95][6/6]  base_lr: 6.5920e-03 lr: 6.5920e-03  eta: 0:12:13  time: 1.3774  data_time: 0.9810  memory: 11042  grad_norm: 131.6769  loss: 66.0040  loss_cls: 17.7407  loss_bbox: 21.2390  loss_dfl: 27.0243
+05/03 21:11:37 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:37 - mmengine - INFO - Epoch(train)  [96][6/6]  base_lr: 6.5179e-03 lr: 6.5179e-03  eta: 0:12:05  time: 1.3264  data_time: 0.9315  memory: 10993  grad_norm: 132.4520  loss: 65.9584  loss_cls: 17.7587  loss_bbox: 21.1658  loss_dfl: 27.0340
+05/03 21:11:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:44 - mmengine - INFO - Epoch(train)  [97][6/6]  base_lr: 6.4434e-03 lr: 6.4434e-03  eta: 0:11:58  time: 1.2937  data_time: 0.9043  memory: 11092  grad_norm: 130.0434  loss: 65.3006  loss_cls: 17.5159  loss_bbox: 20.9133  loss_dfl: 26.8714
+05/03 21:11:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:50 - mmengine - INFO - Epoch(train)  [98][6/6]  base_lr: 6.3687e-03 lr: 6.3687e-03  eta: 0:11:50  time: 1.2441  data_time: 0.8583  memory: 11018  grad_norm: 129.5815  loss: 65.1233  loss_cls: 17.5070  loss_bbox: 20.7977  loss_dfl: 26.8186
+05/03 21:11:56 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:11:56 - mmengine - INFO - Epoch(train)  [99][6/6]  base_lr: 6.2936e-03 lr: 6.2936e-03  eta: 0:11:42  time: 1.1968  data_time: 0.8152  memory: 11092  grad_norm: 124.9768  loss: 64.2803  loss_cls: 17.1726  loss_bbox: 20.5012  loss_dfl: 26.6065
+05/03 21:12:02 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:02 - mmengine - INFO - Epoch(train) [100][6/6]  base_lr: 6.2182e-03 lr: 6.2182e-03  eta: 0:11:34  time: 1.1351  data_time: 0.7584  memory: 11117  grad_norm: 122.8625  loss: 63.8345  loss_cls: 17.0383  loss_bbox: 20.3077  loss_dfl: 26.4885
+05/03 21:12:02 - mmengine - INFO - Saving checkpoint at 100 epochs
+05/03 21:12:04 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.300
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.069
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.135
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.187
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.304
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.304
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.303
+05/03 21:12:04 - mmengine - INFO - bbox_mAP_copypaste: 0.128 0.300 0.069 -1.000 0.450 0.135
+05/03 21:12:04 - mmengine - INFO - Epoch(val) [100][18/18]    coco/bbox_mAP: 0.1280  coco/bbox_mAP_50: 0.3000  coco/bbox_mAP_75: 0.0690  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4500  coco/bbox_mAP_l: 0.1350  data_time: 0.0149  time: 0.0235
+05/03 21:12:04 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_90.pth is removed
+05/03 21:12:05 - mmengine - INFO - The best checkpoint with 0.1280 coco/bbox_mAP at 100 epoch is saved to best_coco_bbox_mAP_epoch_100.pth.
+05/03 21:12:12 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:12 - mmengine - INFO - Epoch(train) [101][6/6]  base_lr: 6.1425e-03 lr: 6.1425e-03  eta: 0:11:26  time: 1.0774  data_time: 0.7027  memory: 11018  grad_norm: 124.1725  loss: 63.6996  loss_cls: 16.9624  loss_bbox: 20.1549  loss_dfl: 26.5823
+05/03 21:12:18 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:18 - mmengine - INFO - Epoch(train) [102][6/6]  base_lr: 6.0665e-03 lr: 6.0665e-03  eta: 0:11:18  time: 1.0233  data_time: 0.6514  memory: 10993  grad_norm: 124.1958  loss: 63.2843  loss_cls: 16.7256  loss_bbox: 20.0246  loss_dfl: 26.5340
+05/03 21:12:24 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:24 - mmengine - INFO - Epoch(train) [103][6/6]  base_lr: 5.9903e-03 lr: 5.9903e-03  eta: 0:11:10  time: 0.9694  data_time: 0.6014  memory: 11042  grad_norm: 124.1287  loss: 63.2014  loss_cls: 16.6902  loss_bbox: 20.0052  loss_dfl: 26.5060
+05/03 21:12:30 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:30 - mmengine - INFO - Epoch(train) [104][6/6]  base_lr: 5.9138e-03 lr: 5.9138e-03  eta: 0:11:02  time: 0.9567  data_time: 0.5898  memory: 10967  grad_norm: 123.3071  loss: 62.7513  loss_cls: 16.5047  loss_bbox: 19.8503  loss_dfl: 26.3964
+05/03 21:12:36 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:36 - mmengine - INFO - Epoch(train) [105][6/6]  base_lr: 5.8371e-03 lr: 5.8371e-03  eta: 0:10:54  time: 0.9503  data_time: 0.5839  memory: 10967  grad_norm: 123.2205  loss: 62.8679  loss_cls: 16.4623  loss_bbox: 19.9281  loss_dfl: 26.4774
+05/03 21:12:42 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:42 - mmengine - INFO - Epoch(train) [106][6/6]  base_lr: 5.7603e-03 lr: 5.7603e-03  eta: 0:10:47  time: 0.9457  data_time: 0.5787  memory: 11042  grad_norm: 123.7078  loss: 62.6392  loss_cls: 16.3123  loss_bbox: 19.8594  loss_dfl: 26.4675
+05/03 21:12:48 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:48 - mmengine - INFO - Epoch(train) [107][6/6]  base_lr: 5.6833e-03 lr: 5.6833e-03  eta: 0:10:39  time: 0.9391  data_time: 0.5722  memory: 11042  grad_norm: 122.9164  loss: 62.3310  loss_cls: 16.1307  loss_bbox: 19.8190  loss_dfl: 26.3813
+05/03 21:12:54 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:12:54 - mmengine - INFO - Epoch(train) [108][6/6]  base_lr: 5.6061e-03 lr: 5.6061e-03  eta: 0:10:31  time: 0.9517  data_time: 0.5843  memory: 11067  grad_norm: 124.5445  loss: 62.6388  loss_cls: 16.2406  loss_bbox: 19.8798  loss_dfl: 26.5183
+05/03 21:13:00 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:00 - mmengine - INFO - Epoch(train) [109][6/6]  base_lr: 5.5287e-03 lr: 5.5287e-03  eta: 0:10:24  time: 0.9655  data_time: 0.5959  memory: 11018  grad_norm: 123.2599  loss: 62.1992  loss_cls: 16.0642  loss_bbox: 19.7370  loss_dfl: 26.3980
+05/03 21:13:06 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:06 - mmengine - INFO - Epoch(train) [110][6/6]  base_lr: 5.4513e-03 lr: 5.4513e-03  eta: 0:10:17  time: 0.9734  data_time: 0.6015  memory: 11092  grad_norm: 123.9229  loss: 62.3236  loss_cls: 16.1058  loss_bbox: 19.7969  loss_dfl: 26.4209
+05/03 21:13:06 - mmengine - INFO - Saving checkpoint at 110 epochs
+05/03 21:13:09 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.107
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.240
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.083
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.117
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.140
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.214
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.214
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.206
+05/03 21:13:09 - mmengine - INFO - bbox_mAP_copypaste: 0.107 0.240 0.083 -1.000 0.500 0.117
+05/03 21:13:09 - mmengine - INFO - Epoch(val) [110][18/18]    coco/bbox_mAP: 0.1070  coco/bbox_mAP_50: 0.2400  coco/bbox_mAP_75: 0.0830  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.5000  coco/bbox_mAP_l: 0.1170  data_time: 0.0082  time: 0.0272
+05/03 21:13:15 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:15 - mmengine - INFO - Epoch(train) [111][6/6]  base_lr: 5.3737e-03 lr: 5.3737e-03  eta: 0:10:09  time: 0.9819  data_time: 0.6079  memory: 11067  grad_norm: 120.4402  loss: 61.6320  loss_cls: 15.7555  loss_bbox: 19.5805  loss_dfl: 26.2960
+05/03 21:13:22 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:22 - mmengine - INFO - Epoch(train) [112][6/6]  base_lr: 5.2961e-03 lr: 5.2961e-03  eta: 0:10:02  time: 0.9937  data_time: 0.6193  memory: 11042  grad_norm: 119.4728  loss: 61.4609  loss_cls: 15.7039  loss_bbox: 19.4694  loss_dfl: 26.2876
+05/03 21:13:28 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:28 - mmengine - INFO - Epoch(train) [113][6/6]  base_lr: 5.2184e-03 lr: 5.2184e-03  eta: 0:09:54  time: 0.9912  data_time: 0.6153  memory: 10993  grad_norm: 120.2957  loss: 61.0720  loss_cls: 15.6746  loss_bbox: 19.2403  loss_dfl: 26.1571
+05/03 21:13:34 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:34 - mmengine - INFO - Epoch(train) [114][6/6]  base_lr: 5.1407e-03 lr: 5.1407e-03  eta: 0:09:47  time: 0.9873  data_time: 0.6141  memory: 11117  grad_norm: 118.4761  loss: 60.6843  loss_cls: 15.5584  loss_bbox: 19.0750  loss_dfl: 26.0509
+05/03 21:13:39 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:39 - mmengine - INFO - Epoch(train) [115][6/6]  base_lr: 5.0630e-03 lr: 5.0630e-03  eta: 0:09:39  time: 0.9874  data_time: 0.6146  memory: 10993  grad_norm: 117.3565  loss: 60.1666  loss_cls: 15.3561  loss_bbox: 18.8027  loss_dfl: 26.0077
+05/03 21:13:45 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:45 - mmengine - INFO - Epoch(train) [116][6/6]  base_lr: 4.9852e-03 lr: 4.9852e-03  eta: 0:09:32  time: 0.9823  data_time: 0.6103  memory: 10993  grad_norm: 117.4852  loss: 59.4123  loss_cls: 15.0910  loss_bbox: 18.5247  loss_dfl: 25.7965
+05/03 21:13:51 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:51 - mmengine - INFO - Epoch(train) [117][6/6]  base_lr: 4.9075e-03 lr: 4.9075e-03  eta: 0:09:24  time: 0.9687  data_time: 0.6001  memory: 11067  grad_norm: 116.3673  loss: 59.4636  loss_cls: 15.0710  loss_bbox: 18.5431  loss_dfl: 25.8496
+05/03 21:13:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:13:57 - mmengine - INFO - Epoch(train) [118][6/6]  base_lr: 4.8298e-03 lr: 4.8298e-03  eta: 0:09:17  time: 0.9670  data_time: 0.6006  memory: 10993  grad_norm: 114.7378  loss: 59.0908  loss_cls: 14.8828  loss_bbox: 18.4544  loss_dfl: 25.7536
+05/03 21:14:04 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:04 - mmengine - INFO - Epoch(train) [119][6/6]  base_lr: 4.7521e-03 lr: 4.7521e-03  eta: 0:09:10  time: 0.9721  data_time: 0.6076  memory: 11117  grad_norm: 114.4979  loss: 58.8512  loss_cls: 14.8315  loss_bbox: 18.3405  loss_dfl: 25.6792
+05/03 21:14:10 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:10 - mmengine - INFO - Epoch(train) [120][6/6]  base_lr: 4.6745e-03 lr: 4.6745e-03  eta: 0:09:02  time: 0.9656  data_time: 0.6033  memory: 11142  grad_norm: 114.5383  loss: 58.7420  loss_cls: 14.7733  loss_bbox: 18.3026  loss_dfl: 25.6661
+05/03 21:14:10 - mmengine - INFO - Saving checkpoint at 120 epochs
+05/03 21:14:12 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.152
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.272
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.122
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.156
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.186
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.217
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.217
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.214
+05/03 21:14:12 - mmengine - INFO - bbox_mAP_copypaste: 0.152 0.272 0.122 -1.000 0.400 0.156
+05/03 21:14:12 - mmengine - INFO - Epoch(val) [120][18/18]    coco/bbox_mAP: 0.1520  coco/bbox_mAP_50: 0.2720  coco/bbox_mAP_75: 0.1220  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4000  coco/bbox_mAP_l: 0.1560  data_time: 0.0144  time: 0.0227
+05/03 21:14:12 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_100.pth is removed
+05/03 21:14:13 - mmengine - INFO - The best checkpoint with 0.1520 coco/bbox_mAP at 120 epoch is saved to best_coco_bbox_mAP_epoch_120.pth.
+05/03 21:14:21 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:21 - mmengine - INFO - Epoch(train) [121][6/6]  base_lr: 4.5971e-03 lr: 4.5971e-03  eta: 0:08:55  time: 0.9649  data_time: 0.6042  memory: 11018  grad_norm: 111.0142  loss: 58.1316  loss_cls: 14.4686  loss_bbox: 18.0739  loss_dfl: 25.5892
+05/03 21:14:27 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:27 - mmengine - INFO - Epoch(train) [122][6/6]  base_lr: 4.5197e-03 lr: 4.5197e-03  eta: 0:08:48  time: 0.9776  data_time: 0.6165  memory: 11042  grad_norm: 109.2202  loss: 57.6918  loss_cls: 14.2408  loss_bbox: 17.9415  loss_dfl: 25.5094
+05/03 21:14:33 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:33 - mmengine - INFO - Epoch(train) [123][6/6]  base_lr: 4.4425e-03 lr: 4.4425e-03  eta: 0:08:41  time: 0.9763  data_time: 0.6142  memory: 11018  grad_norm: 110.4728  loss: 57.6754  loss_cls: 14.2909  loss_bbox: 17.9061  loss_dfl: 25.4784
+05/03 21:14:38 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:38 - mmengine - INFO - Epoch(train) [124][6/6]  base_lr: 4.3654e-03 lr: 4.3654e-03  eta: 0:08:33  time: 0.9701  data_time: 0.6058  memory: 11067  grad_norm: 107.7759  loss: 57.2256  loss_cls: 14.0480  loss_bbox: 17.7820  loss_dfl: 25.3957
+05/03 21:14:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:44 - mmengine - INFO - Epoch(train) [125][6/6]  base_lr: 4.2885e-03 lr: 4.2885e-03  eta: 0:08:26  time: 0.9722  data_time: 0.6095  memory: 11018  grad_norm: 107.9491  loss: 56.7118  loss_cls: 13.8655  loss_bbox: 17.5788  loss_dfl: 25.2674
+05/03 21:14:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:50 - mmengine - INFO - Epoch(train) [126][6/6]  base_lr: 4.2117e-03 lr: 4.2117e-03  eta: 0:08:19  time: 0.9692  data_time: 0.6058  memory: 11018  grad_norm: 106.8062  loss: 56.3796  loss_cls: 13.7791  loss_bbox: 17.3989  loss_dfl: 25.2016
+05/03 21:14:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:14:57 - mmengine - INFO - Epoch(train) [127][6/6]  base_lr: 4.1352e-03 lr: 4.1352e-03  eta: 0:08:12  time: 0.9735  data_time: 0.6097  memory: 11018  grad_norm: 105.8300  loss: 55.9658  loss_cls: 13.5854  loss_bbox: 17.2247  loss_dfl: 25.1557
+05/03 21:15:03 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:03 - mmengine - INFO - Epoch(train) [128][6/6]  base_lr: 4.0589e-03 lr: 4.0589e-03  eta: 0:08:05  time: 0.9673  data_time: 0.6017  memory: 11018  grad_norm: 106.3341  loss: 55.3290  loss_cls: 13.3287  loss_bbox: 16.9539  loss_dfl: 25.0464
+05/03 21:15:09 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:09 - mmengine - INFO - Epoch(train) [129][6/6]  base_lr: 3.9828e-03 lr: 3.9828e-03  eta: 0:07:57  time: 0.9717  data_time: 0.6058  memory: 11018  grad_norm: 106.6433  loss: 55.0382  loss_cls: 13.2054  loss_bbox: 16.8430  loss_dfl: 24.9898
+05/03 21:15:15 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:15 - mmengine - INFO - Epoch(train) [130][6/6]  base_lr: 3.9071e-03 lr: 3.9071e-03  eta: 0:07:50  time: 0.9629  data_time: 0.5941  memory: 11067  grad_norm: 105.4758  loss: 54.6519  loss_cls: 13.0725  loss_bbox: 16.6965  loss_dfl: 24.8830
+05/03 21:15:15 - mmengine - INFO - Saving checkpoint at 130 epochs
+05/03 21:15:17 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.163
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.285
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.162
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.325
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.175
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.176
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.212
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.212
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.211
+05/03 21:15:17 - mmengine - INFO - bbox_mAP_copypaste: 0.163 0.285 0.162 -1.000 0.325 0.175
+05/03 21:15:17 - mmengine - INFO - Epoch(val) [130][18/18]    coco/bbox_mAP: 0.1630  coco/bbox_mAP_50: 0.2850  coco/bbox_mAP_75: 0.1620  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.3250  coco/bbox_mAP_l: 0.1750  data_time: 0.0129  time: 0.0241
+05/03 21:15:17 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_120.pth is removed
+05/03 21:15:18 - mmengine - INFO - The best checkpoint with 0.1630 coco/bbox_mAP at 130 epoch is saved to best_coco_bbox_mAP_epoch_130.pth.
+05/03 21:15:26 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:26 - mmengine - INFO - Epoch(train) [131][6/6]  base_lr: 3.8315e-03 lr: 3.8315e-03  eta: 0:07:43  time: 0.9595  data_time: 0.5917  memory: 11018  grad_norm: 104.0409  loss: 54.4671  loss_cls: 12.9702  loss_bbox: 16.5442  loss_dfl: 24.9527
+05/03 21:15:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:32 - mmengine - INFO - Epoch(train) [132][6/6]  base_lr: 3.7563e-03 lr: 3.7563e-03  eta: 0:07:36  time: 0.9716  data_time: 0.6056  memory: 10967  grad_norm: 105.6996  loss: 54.5134  loss_cls: 13.0270  loss_bbox: 16.5091  loss_dfl: 24.9774
+05/03 21:15:37 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:37 - mmengine - INFO - Epoch(train) [133][6/6]  base_lr: 3.6814e-03 lr: 3.6814e-03  eta: 0:07:29  time: 0.9673  data_time: 0.6000  memory: 10967  grad_norm: 104.7165  loss: 54.2676  loss_cls: 12.9526  loss_bbox: 16.3684  loss_dfl: 24.9466
+05/03 21:15:43 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:43 - mmengine - INFO - Epoch(train) [134][6/6]  base_lr: 3.6069e-03 lr: 3.6069e-03  eta: 0:07:22  time: 0.9661  data_time: 0.5987  memory: 11092  grad_norm: 104.9485  loss: 54.2860  loss_cls: 12.9114  loss_bbox: 16.3722  loss_dfl: 25.0024
+05/03 21:15:49 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:49 - mmengine - INFO - Epoch(train) [135][6/6]  base_lr: 3.5327e-03 lr: 3.5327e-03  eta: 0:07:15  time: 0.9496  data_time: 0.5827  memory: 10993  grad_norm: 104.2679  loss: 53.8958  loss_cls: 12.7912  loss_bbox: 16.2004  loss_dfl: 24.9043
+05/03 21:15:55 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:15:55 - mmengine - INFO - Epoch(train) [136][6/6]  base_lr: 3.4589e-03 lr: 3.4589e-03  eta: 0:07:07  time: 0.9492  data_time: 0.5846  memory: 11042  grad_norm: 103.5578  loss: 53.8864  loss_cls: 12.8223  loss_bbox: 16.1796  loss_dfl: 24.8845
+05/03 21:16:01 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:01 - mmengine - INFO - Epoch(train) [137][6/6]  base_lr: 3.3854e-03 lr: 3.3854e-03  eta: 0:07:01  time: 0.9524  data_time: 0.5885  memory: 10993  grad_norm: 102.2129  loss: 53.6398  loss_cls: 12.7316  loss_bbox: 16.0560  loss_dfl: 24.8522
+05/03 21:16:07 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:07 - mmengine - INFO - Epoch(train) [138][6/6]  base_lr: 3.3124e-03 lr: 3.3124e-03  eta: 0:06:53  time: 0.9479  data_time: 0.5869  memory: 10993  grad_norm: 102.3705  loss: 53.3150  loss_cls: 12.6004  loss_bbox: 15.9233  loss_dfl: 24.7912
+05/03 21:16:13 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:13 - mmengine - INFO - Epoch(train) [139][6/6]  base_lr: 3.2398e-03 lr: 3.2398e-03  eta: 0:06:47  time: 0.9608  data_time: 0.5966  memory: 11067  grad_norm: 102.2437  loss: 52.8714  loss_cls: 12.4030  loss_bbox: 15.7977  loss_dfl: 24.6707
+05/03 21:16:19 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:19 - mmengine - INFO - Epoch(train) [140][6/6]  base_lr: 3.1677e-03 lr: 3.1677e-03  eta: 0:06:40  time: 0.9606  data_time: 0.5972  memory: 11042  grad_norm: 100.6246  loss: 52.3179  loss_cls: 12.1802  loss_bbox: 15.5582  loss_dfl: 24.5795
+05/03 21:16:19 - mmengine - INFO - Saving checkpoint at 140 epochs
+05/03 21:16:21 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.132
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.291
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.116
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.134
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.129
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.168
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.168
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.500
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.167
+05/03 21:16:21 - mmengine - INFO - bbox_mAP_copypaste: 0.132 0.291 0.116 -1.000 0.500 0.134
+05/03 21:16:21 - mmengine - INFO - Epoch(val) [140][18/18]    coco/bbox_mAP: 0.1320  coco/bbox_mAP_50: 0.2910  coco/bbox_mAP_75: 0.1160  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.5000  coco/bbox_mAP_l: 0.1340  data_time: 0.0147  time: 0.0232
+05/03 21:16:28 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:28 - mmengine - INFO - Epoch(train) [141][6/6]  base_lr: 3.0960e-03 lr: 3.0960e-03  eta: 0:06:33  time: 0.9696  data_time: 0.6034  memory: 11018  grad_norm: 99.4642  loss: 51.7710  loss_cls: 11.9839  loss_bbox: 15.3486  loss_dfl: 24.4385
+05/03 21:16:33 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:33 - mmengine - INFO - Epoch(train) [142][6/6]  base_lr: 3.0248e-03 lr: 3.0248e-03  eta: 0:06:26  time: 0.9708  data_time: 0.6063  memory: 11067  grad_norm: 98.4008  loss: 51.1997  loss_cls: 11.7585  loss_bbox: 15.1204  loss_dfl: 24.3208
+05/03 21:16:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:40 - mmengine - INFO - Epoch(train) [143][6/6]  base_lr: 2.9541e-03 lr: 2.9541e-03  eta: 0:06:19  time: 0.9787  data_time: 0.6149  memory: 11018  grad_norm: 99.5543  loss: 50.8482  loss_cls: 11.6732  loss_bbox: 14.8899  loss_dfl: 24.2850
+05/03 21:16:46 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:46 - mmengine - INFO - Epoch(train) [144][6/6]  base_lr: 2.8839e-03 lr: 2.8839e-03  eta: 0:06:12  time: 0.9902  data_time: 0.6263  memory: 10993  grad_norm: 99.2083  loss: 50.4714  loss_cls: 11.5332  loss_bbox: 14.7342  loss_dfl: 24.2040
+05/03 21:16:52 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:52 - mmengine - INFO - Epoch(train) [145][6/6]  base_lr: 2.8143e-03 lr: 2.8143e-03  eta: 0:06:05  time: 0.9893  data_time: 0.6249  memory: 11117  grad_norm: 98.1913  loss: 50.0098  loss_cls: 11.3750  loss_bbox: 14.5059  loss_dfl: 24.1289
+05/03 21:16:58 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:16:58 - mmengine - INFO - Epoch(train) [146][6/6]  base_lr: 2.7452e-03 lr: 2.7452e-03  eta: 0:05:59  time: 0.9991  data_time: 0.6355  memory: 10993  grad_norm: 97.8170  loss: 49.9137  loss_cls: 11.3270  loss_bbox: 14.4308  loss_dfl: 24.1558
+05/03 21:17:04 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:04 - mmengine - INFO - Epoch(train) [147][6/6]  base_lr: 2.6767e-03 lr: 2.6767e-03  eta: 0:05:52  time: 0.9894  data_time: 0.6256  memory: 11042  grad_norm: 97.8145  loss: 49.9672  loss_cls: 11.3697  loss_bbox: 14.4442  loss_dfl: 24.1534
+05/03 21:17:10 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:10 - mmengine - INFO - Epoch(train) [148][6/6]  base_lr: 2.6087e-03 lr: 2.6087e-03  eta: 0:05:45  time: 0.9914  data_time: 0.6263  memory: 11067  grad_norm: 96.5567  loss: 49.5480  loss_cls: 11.2367  loss_bbox: 14.2620  loss_dfl: 24.0493
+05/03 21:17:16 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:16 - mmengine - INFO - Epoch(train) [149][6/6]  base_lr: 2.5414e-03 lr: 2.5414e-03  eta: 0:05:38  time: 0.9850  data_time: 0.6234  memory: 10993  grad_norm: 96.4845  loss: 49.2897  loss_cls: 11.1586  loss_bbox: 14.1220  loss_dfl: 24.0091
+05/03 21:17:22 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:22 - mmengine - INFO - Epoch(train) [150][6/6]  base_lr: 2.4747e-03 lr: 2.4747e-03  eta: 0:05:31  time: 0.9877  data_time: 0.6237  memory: 10993  grad_norm: 97.0196  loss: 49.2583  loss_cls: 11.1515  loss_bbox: 14.0838  loss_dfl: 24.0230
+05/03 21:17:22 - mmengine - INFO - Saving checkpoint at 150 epochs
+05/03 21:17:25 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.167
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.308
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.141
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.167
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.160
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.296
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.296
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.296
+05/03 21:17:25 - mmengine - INFO - bbox_mAP_copypaste: 0.167 0.308 0.141 -1.000 0.400 0.167
+05/03 21:17:25 - mmengine - INFO - Epoch(val) [150][18/18]    coco/bbox_mAP: 0.1670  coco/bbox_mAP_50: 0.3080  coco/bbox_mAP_75: 0.1410  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4000  coco/bbox_mAP_l: 0.1670  data_time: 0.0118  time: 0.0232
+05/03 21:17:25 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_130.pth is removed
+05/03 21:17:26 - mmengine - INFO - The best checkpoint with 0.1670 coco/bbox_mAP at 150 epoch is saved to best_coco_bbox_mAP_epoch_150.pth.
+05/03 21:17:34 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:34 - mmengine - INFO - Epoch(train) [151][6/6]  base_lr: 2.4086e-03 lr: 2.4086e-03  eta: 0:05:24  time: 0.9933  data_time: 0.6283  memory: 11018  grad_norm: 95.6427  loss: 48.9480  loss_cls: 11.0335  loss_bbox: 13.9957  loss_dfl: 23.9188
+05/03 21:17:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:40 - mmengine - INFO - Epoch(train) [152][6/6]  base_lr: 2.3432e-03 lr: 2.3432e-03  eta: 0:05:18  time: 0.9862  data_time: 0.6223  memory: 11067  grad_norm: 95.0738  loss: 48.4658  loss_cls: 10.8442  loss_bbox: 13.8053  loss_dfl: 23.8162
+05/03 21:17:46 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:46 - mmengine - INFO - Epoch(train) [153][6/6]  base_lr: 2.2784e-03 lr: 2.2784e-03  eta: 0:05:11  time: 0.9831  data_time: 0.6193  memory: 10993  grad_norm: 95.7999  loss: 48.4543  loss_cls: 10.8169  loss_bbox: 13.7761  loss_dfl: 23.8612
+05/03 21:17:53 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:53 - mmengine - INFO - Epoch(train) [154][6/6]  base_lr: 2.2143e-03 lr: 2.2143e-03  eta: 0:05:04  time: 0.9852  data_time: 0.6208  memory: 11042  grad_norm: 95.4935  loss: 48.0674  loss_cls: 10.7090  loss_bbox: 13.6231  loss_dfl: 23.7353
+05/03 21:17:59 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:17:59 - mmengine - INFO - Epoch(train) [155][6/6]  base_lr: 2.1510e-03 lr: 2.1510e-03  eta: 0:04:57  time: 0.9913  data_time: 0.6303  memory: 11018  grad_norm: 95.7893  loss: 47.7443  loss_cls: 10.6025  loss_bbox: 13.4297  loss_dfl: 23.7121
+05/03 21:18:04 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:04 - mmengine - INFO - Epoch(train) [156][6/6]  base_lr: 2.0883e-03 lr: 2.0883e-03  eta: 0:04:50  time: 0.9814  data_time: 0.6213  memory: 11042  grad_norm: 97.0611  loss: 47.7489  loss_cls: 10.5569  loss_bbox: 13.4148  loss_dfl: 23.7772
+05/03 21:18:11 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:11 - mmengine - INFO - Epoch(train) [157][6/6]  base_lr: 2.0264e-03 lr: 2.0264e-03  eta: 0:04:44  time: 0.9895  data_time: 0.6267  memory: 10993  grad_norm: 97.0784  loss: 47.4615  loss_cls: 10.4636  loss_bbox: 13.2934  loss_dfl: 23.7045
+05/03 21:18:17 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:17 - mmengine - INFO - Epoch(train) [158][6/6]  base_lr: 1.9652e-03 lr: 1.9652e-03  eta: 0:04:37  time: 0.9949  data_time: 0.6336  memory: 11042  grad_norm: 97.0405  loss: 47.2438  loss_cls: 10.4030  loss_bbox: 13.1749  loss_dfl: 23.6660
+05/03 21:18:23 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:23 - mmengine - INFO - Epoch(train) [159][6/6]  base_lr: 1.9047e-03 lr: 1.9047e-03  eta: 0:04:30  time: 0.9851  data_time: 0.6239  memory: 11042  grad_norm: 97.7795  loss: 47.1634  loss_cls: 10.3510  loss_bbox: 13.1238  loss_dfl: 23.6885
+05/03 21:18:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:29 - mmengine - INFO - Epoch(train) [160][6/6]  base_lr: 1.8451e-03 lr: 1.8451e-03  eta: 0:04:24  time: 0.9924  data_time: 0.6312  memory: 10967  grad_norm: 98.2142  loss: 47.1336  loss_cls: 10.3433  loss_bbox: 13.0788  loss_dfl: 23.7114
+05/03 21:18:29 - mmengine - INFO - Saving checkpoint at 160 epochs
+05/03 21:18:31 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.173
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.318
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.162
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.168
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.209
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.252
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.252
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.255
+05/03 21:18:31 - mmengine - INFO - bbox_mAP_copypaste: 0.173 0.318 0.162 -1.000 0.400 0.168
+05/03 21:18:31 - mmengine - INFO - Epoch(val) [160][18/18]    coco/bbox_mAP: 0.1730  coco/bbox_mAP_50: 0.3180  coco/bbox_mAP_75: 0.1620  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4000  coco/bbox_mAP_l: 0.1680  data_time: 0.0157  time: 0.0240
+05/03 21:18:31 - mmengine - INFO - The previous best checkpoint E:\StevenWork\mmyolo\work_dirs\ocean_trash_train\best_coco_bbox_mAP_epoch_150.pth is removed
+05/03 21:18:33 - mmengine - INFO - The best checkpoint with 0.1730 coco/bbox_mAP at 160 epoch is saved to best_coco_bbox_mAP_epoch_160.pth.
+05/03 21:18:40 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:40 - mmengine - INFO - Epoch(train) [161][6/6]  base_lr: 1.7862e-03 lr: 1.7862e-03  eta: 0:04:17  time: 0.9867  data_time: 0.6260  memory: 11067  grad_norm: 96.7030  loss: 46.7146  loss_cls: 10.2195  loss_bbox: 12.8996  loss_dfl: 23.5955
+05/03 21:18:46 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:46 - mmengine - INFO - Epoch(train) [162][6/6]  base_lr: 1.7282e-03 lr: 1.7282e-03  eta: 0:04:10  time: 0.9793  data_time: 0.6174  memory: 11117  grad_norm: 95.9730  loss: 46.5890  loss_cls: 10.1099  loss_bbox: 12.8850  loss_dfl: 23.5941
+05/03 21:18:52 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:52 - mmengine - INFO - Epoch(train) [163][6/6]  base_lr: 1.6710e-03 lr: 1.6710e-03  eta: 0:04:03  time: 0.9827  data_time: 0.6197  memory: 11092  grad_norm: 95.4883  loss: 46.1709  loss_cls: 9.9477  loss_bbox: 12.7163  loss_dfl: 23.5070
+05/03 21:18:58 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:18:58 - mmengine - INFO - Epoch(train) [164][6/6]  base_lr: 1.6145e-03 lr: 1.6145e-03  eta: 0:03:57  time: 0.9903  data_time: 0.6234  memory: 11142  grad_norm: 94.6248  loss: 46.0400  loss_cls: 9.8722  loss_bbox: 12.6772  loss_dfl: 23.4905
+05/03 21:19:04 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:04 - mmengine - INFO - Epoch(train) [165][6/6]  base_lr: 1.5590e-03 lr: 1.5590e-03  eta: 0:03:50  time: 0.9806  data_time: 0.6163  memory: 11092  grad_norm: 94.0615  loss: 45.9757  loss_cls: 9.8560  loss_bbox: 12.6104  loss_dfl: 23.5093
+05/03 21:19:10 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:10 - mmengine - INFO - Epoch(train) [166][6/6]  base_lr: 1.5043e-03 lr: 1.5043e-03  eta: 0:03:43  time: 0.9709  data_time: 0.6069  memory: 10967  grad_norm: 93.4179  loss: 45.7085  loss_cls: 9.7659  loss_bbox: 12.4635  loss_dfl: 23.4791
+05/03 21:19:16 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:16 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:16 - mmengine - INFO - Epoch(train) [167][6/6]  base_lr: 1.4505e-03 lr: 1.4505e-03  eta: 0:03:37  time: 0.9789  data_time: 0.6173  memory: 10967  grad_norm: 94.3482  loss: 45.5683  loss_cls: 9.7185  loss_bbox: 12.3807  loss_dfl: 23.4690
+05/03 21:19:22 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:22 - mmengine - INFO - Epoch(train) [168][6/6]  base_lr: 1.3976e-03 lr: 1.3976e-03  eta: 0:03:30  time: 0.9736  data_time: 0.6112  memory: 10993  grad_norm: 94.5596  loss: 45.5637  loss_cls: 9.6982  loss_bbox: 12.4052  loss_dfl: 23.4603
+05/03 21:19:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:29 - mmengine - INFO - Epoch(train) [169][6/6]  base_lr: 1.3455e-03 lr: 1.3455e-03  eta: 0:03:23  time: 0.9811  data_time: 0.6178  memory: 11167  grad_norm: 93.7269  loss: 45.4673  loss_cls: 9.6522  loss_bbox: 12.3612  loss_dfl: 23.4540
+05/03 21:19:34 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:34 - mmengine - INFO - Epoch(train) [170][6/6]  base_lr: 1.2944e-03 lr: 1.2944e-03  eta: 0:03:16  time: 0.9698  data_time: 0.6078  memory: 11067  grad_norm: 94.7590  loss: 45.3917  loss_cls: 9.6681  loss_bbox: 12.2852  loss_dfl: 23.4383
+05/03 21:19:34 - mmengine - INFO - Saving checkpoint at 170 epochs
+05/03 21:19:36 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.113
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.249
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.069
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.250
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.110
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.121
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.173
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.173
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.250
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.171
+05/03 21:19:36 - mmengine - INFO - bbox_mAP_copypaste: 0.113 0.249 0.069 -1.000 0.250 0.110
+05/03 21:19:36 - mmengine - INFO - Epoch(val) [170][18/18]    coco/bbox_mAP: 0.1130  coco/bbox_mAP_50: 0.2490  coco/bbox_mAP_75: 0.0690  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.2500  coco/bbox_mAP_l: 0.1100  data_time: 0.0152  time: 0.0231
+05/03 21:19:42 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:42 - mmengine - INFO - Epoch(train) [171][6/6]  base_lr: 1.2442e-03 lr: 1.2442e-03  eta: 0:03:10  time: 0.9666  data_time: 0.6025  memory: 11018  grad_norm: 94.0818  loss: 45.1768  loss_cls: 9.6101  loss_bbox: 12.1789  loss_dfl: 23.3879
+05/03 21:19:48 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:48 - mmengine - INFO - Epoch(train) [172][6/6]  base_lr: 1.1950e-03 lr: 1.1950e-03  eta: 0:03:03  time: 0.9685  data_time: 0.6067  memory: 11018  grad_norm: 94.3650  loss: 45.1164  loss_cls: 9.6490  loss_bbox: 12.1242  loss_dfl: 23.3432
+05/03 21:19:54 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:19:54 - mmengine - INFO - Epoch(train) [173][6/6]  base_lr: 1.1467e-03 lr: 1.1467e-03  eta: 0:02:57  time: 0.9667  data_time: 0.6058  memory: 11018  grad_norm: 95.0814  loss: 44.9023  loss_cls: 9.6106  loss_bbox: 12.0077  loss_dfl: 23.2840
+05/03 21:20:00 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:00 - mmengine - INFO - Epoch(train) [174][6/6]  base_lr: 1.0994e-03 lr: 1.0994e-03  eta: 0:02:50  time: 0.9712  data_time: 0.6073  memory: 11018  grad_norm: 96.2283  loss: 44.9615  loss_cls: 9.6790  loss_bbox: 12.0112  loss_dfl: 23.2713
+05/03 21:20:06 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:06 - mmengine - INFO - Epoch(train) [175][6/6]  base_lr: 1.0530e-03 lr: 1.0530e-03  eta: 0:02:43  time: 0.9663  data_time: 0.5985  memory: 11018  grad_norm: 95.1172  loss: 44.7264  loss_cls: 9.6133  loss_bbox: 11.8966  loss_dfl: 23.2165
+05/03 21:20:12 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:12 - mmengine - INFO - Epoch(train) [176][6/6]  base_lr: 1.0076e-03 lr: 1.0076e-03  eta: 0:02:37  time: 0.9647  data_time: 0.5951  memory: 11067  grad_norm: 93.8955  loss: 44.4277  loss_cls: 9.5315  loss_bbox: 11.7731  loss_dfl: 23.1230
+05/03 21:20:18 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:18 - mmengine - INFO - Epoch(train) [177][6/6]  base_lr: 9.6325e-04 lr: 9.6325e-04  eta: 0:02:30  time: 0.9489  data_time: 0.5794  memory: 11142  grad_norm: 93.1498  loss: 44.3080  loss_cls: 9.5227  loss_bbox: 11.6846  loss_dfl: 23.1006
+05/03 21:20:24 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:24 - mmengine - INFO - Epoch(train) [178][6/6]  base_lr: 9.1988e-04 lr: 9.1988e-04  eta: 0:02:23  time: 0.9573  data_time: 0.5855  memory: 10993  grad_norm: 93.8739  loss: 43.8964  loss_cls: 9.4098  loss_bbox: 11.4952  loss_dfl: 22.9914
+05/03 21:20:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:29 - mmengine - INFO - Epoch(train) [179][6/6]  base_lr: 8.7753e-04 lr: 8.7753e-04  eta: 0:02:17  time: 0.9491  data_time: 0.5803  memory: 10993  grad_norm: 93.3797  loss: 43.7202  loss_cls: 9.3531  loss_bbox: 11.3880  loss_dfl: 22.9790
+05/03 21:20:36 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:36 - mmengine - INFO - Epoch(train) [180][6/6]  base_lr: 8.3622e-04 lr: 8.3622e-04  eta: 0:02:10  time: 0.9564  data_time: 0.5888  memory: 11018  grad_norm: 93.1302  loss: 43.6078  loss_cls: 9.3108  loss_bbox: 11.3294  loss_dfl: 22.9675
+05/03 21:20:36 - mmengine - INFO - Saving checkpoint at 180 epochs
+05/03 21:20:38 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.150
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.316
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.158
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.161
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.151
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.216
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.216
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.400
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.222
+05/03 21:20:38 - mmengine - INFO - bbox_mAP_copypaste: 0.150 0.316 0.158 -1.000 0.400 0.161
+05/03 21:20:38 - mmengine - INFO - Epoch(val) [180][18/18]    coco/bbox_mAP: 0.1500  coco/bbox_mAP_50: 0.3160  coco/bbox_mAP_75: 0.1580  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4000  coco/bbox_mAP_l: 0.1610  data_time: 0.0118  time: 0.0237
+05/03 21:20:44 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:44 - mmengine - INFO - Epoch(train) [181][6/6]  base_lr: 7.9594e-04 lr: 7.9594e-04  eta: 0:02:04  time: 0.9582  data_time: 0.5895  memory: 11067  grad_norm: 93.0682  loss: 43.3267  loss_cls: 9.1808  loss_bbox: 11.1518  loss_dfl: 22.9942
+05/03 21:20:50 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:50 - mmengine - INFO - Epoch(train) [182][6/6]  base_lr: 7.5671e-04 lr: 7.5671e-04  eta: 0:01:57  time: 0.9598  data_time: 0.5923  memory: 11018  grad_norm: 91.3657  loss: 43.1947  loss_cls: 9.1110  loss_bbox: 11.1137  loss_dfl: 22.9700
+05/03 21:20:57 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:20:57 - mmengine - INFO - Epoch(train) [183][6/6]  base_lr: 7.1854e-04 lr: 7.1854e-04  eta: 0:01:50  time: 0.9706  data_time: 0.6044  memory: 11117  grad_norm: 90.3802  loss: 43.0610  loss_cls: 8.9740  loss_bbox: 11.0799  loss_dfl: 23.0071
+05/03 21:21:03 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:03 - mmengine - INFO - Epoch(train) [184][6/6]  base_lr: 6.8144e-04 lr: 6.8144e-04  eta: 0:01:44  time: 0.9679  data_time: 0.6028  memory: 11067  grad_norm: 90.5755  loss: 43.0329  loss_cls: 9.0173  loss_bbox: 11.0345  loss_dfl: 22.9811
+05/03 21:21:09 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:09 - mmengine - INFO - Epoch(train) [185][6/6]  base_lr: 6.4542e-04 lr: 6.4542e-04  eta: 0:01:37  time: 0.9772  data_time: 0.6122  memory: 11042  grad_norm: 91.1192  loss: 43.0706  loss_cls: 8.9912  loss_bbox: 11.0927  loss_dfl: 22.9867
+05/03 21:21:14 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:14 - mmengine - INFO - Epoch(train) [186][6/6]  base_lr: 6.1048e-04 lr: 6.1048e-04  eta: 0:01:31  time: 0.9741  data_time: 0.6108  memory: 11018  grad_norm: 89.7492  loss: 42.9492  loss_cls: 8.9294  loss_bbox: 11.0326  loss_dfl: 22.9872
+05/03 21:21:20 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:20 - mmengine - INFO - Epoch(train) [187][6/6]  base_lr: 5.7664e-04 lr: 5.7664e-04  eta: 0:01:24  time: 0.9694  data_time: 0.6038  memory: 11067  grad_norm: 90.1845  loss: 42.9876  loss_cls: 8.9041  loss_bbox: 11.0650  loss_dfl: 23.0186
+05/03 21:21:26 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:26 - mmengine - INFO - Epoch(train) [188][6/6]  base_lr: 5.4390e-04 lr: 5.4390e-04  eta: 0:01:18  time: 0.9561  data_time: 0.5918  memory: 11042  grad_norm: 89.7394  loss: 42.9263  loss_cls: 8.8604  loss_bbox: 11.0086  loss_dfl: 23.0573
+05/03 21:21:32 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:32 - mmengine - INFO - Epoch(train) [189][6/6]  base_lr: 5.1228e-04 lr: 5.1228e-04  eta: 0:01:11  time: 0.9633  data_time: 0.5990  memory: 11018  grad_norm: 89.1088  loss: 42.7091  loss_cls: 8.7813  loss_bbox: 10.9304  loss_dfl: 22.9974
+05/03 21:21:38 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:38 - mmengine - INFO - Epoch(train) [190][6/6]  base_lr: 4.8177e-04 lr: 4.8177e-04  eta: 0:01:05  time: 0.9584  data_time: 0.5920  memory: 10993  grad_norm: 91.0968  loss: 42.8304  loss_cls: 8.7539  loss_bbox: 10.9888  loss_dfl: 23.0876
+05/03 21:21:38 - mmengine - INFO - Saving checkpoint at 190 epochs
+05/03 21:21:40 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.135
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.286
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.100
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.130
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.122
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.238
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.238
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.238
+05/03 21:21:40 - mmengine - INFO - bbox_mAP_copypaste: 0.135 0.286 0.100 -1.000 0.450 0.130
+05/03 21:21:40 - mmengine - INFO - Epoch(val) [190][18/18]    coco/bbox_mAP: 0.1350  coco/bbox_mAP_50: 0.2860  coco/bbox_mAP_75: 0.1000  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4500  coco/bbox_mAP_l: 0.1300  data_time: 0.0110  time: 0.0234
+05/03 21:21:46 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:46 - mmengine - INFO - Epoch(train) [191][6/6]  base_lr: 4.5239e-04 lr: 4.5239e-04  eta: 0:00:58  time: 0.9460  data_time: 0.5805  memory: 11067  grad_norm: 91.2357  loss: 42.7707  loss_cls: 8.7836  loss_bbox: 10.9657  loss_dfl: 23.0214
+05/03 21:21:53 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:53 - mmengine - INFO - Epoch(train) [192][6/6]  base_lr: 4.2415e-04 lr: 4.2415e-04  eta: 0:00:51  time: 0.9597  data_time: 0.5954  memory: 11018  grad_norm: 91.5578  loss: 42.8918  loss_cls: 8.7667  loss_bbox: 11.0141  loss_dfl: 23.1110
+05/03 21:21:58 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:21:58 - mmengine - INFO - Epoch(train) [193][6/6]  base_lr: 3.9705e-04 lr: 3.9705e-04  eta: 0:00:45  time: 0.9596  data_time: 0.5935  memory: 11042  grad_norm: 91.3511  loss: 42.6771  loss_cls: 8.7143  loss_bbox: 10.8835  loss_dfl: 23.0793
+05/03 21:22:05 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:05 - mmengine - INFO - Epoch(train) [194][6/6]  base_lr: 3.7109e-04 lr: 3.7109e-04  eta: 0:00:38  time: 0.9675  data_time: 0.6015  memory: 11092  grad_norm: 91.2884  loss: 42.6336  loss_cls: 8.6902  loss_bbox: 10.8749  loss_dfl: 23.0685
+05/03 21:22:11 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:11 - mmengine - INFO - Epoch(train) [195][6/6]  base_lr: 3.4629e-04 lr: 3.4629e-04  eta: 0:00:32  time: 0.9857  data_time: 0.6213  memory: 11018  grad_norm: 90.7695  loss: 42.5669  loss_cls: 8.6550  loss_bbox: 10.8658  loss_dfl: 23.0461
+05/03 21:22:17 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:17 - mmengine - INFO - Epoch(train) [196][6/6]  base_lr: 3.2265e-04 lr: 3.2265e-04  eta: 0:00:25  time: 0.9896  data_time: 0.6220  memory: 11067  grad_norm: 90.7614  loss: 42.3333  loss_cls: 8.5678  loss_bbox: 10.7955  loss_dfl: 22.9700
+05/03 21:22:23 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:23 - mmengine - INFO - Epoch(train) [197][6/6]  base_lr: 3.0018e-04 lr: 3.0018e-04  eta: 0:00:19  time: 0.9856  data_time: 0.6185  memory: 11018  grad_norm: 91.0552  loss: 42.3132  loss_cls: 8.5794  loss_bbox: 10.7921  loss_dfl: 22.9418
+05/03 21:22:29 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:29 - mmengine - INFO - Epoch(train) [198][6/6]  base_lr: 2.7888e-04 lr: 2.7888e-04  eta: 0:00:12  time: 0.9959  data_time: 0.6297  memory: 11018  grad_norm: 87.7076  loss: 41.8671  loss_cls: 8.4613  loss_bbox: 10.6042  loss_dfl: 22.8015
+05/03 21:22:35 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:35 - mmengine - INFO - Epoch(train) [199][6/6]  base_lr: 2.5875e-04 lr: 2.5875e-04  eta: 0:00:06  time: 0.9895  data_time: 0.6254  memory: 10993  grad_norm: 87.2053  loss: 41.6787  loss_cls: 8.3710  loss_bbox: 10.4835  loss_dfl: 22.8243
+05/03 21:22:41 - mmengine - INFO - Exp name: ocean_trash_train_20260503_205934
+05/03 21:22:41 - mmengine - INFO - Epoch(train) [200][6/6]  base_lr: 2.3981e-04 lr: 2.3981e-04  eta: 0:00:00  time: 0.9778  data_time: 0.6113  memory: 10993  grad_norm: 87.2210  loss: 41.5177  loss_cls: 8.2966  loss_bbox: 10.4231  loss_dfl: 22.7979
+05/03 21:22:41 - mmengine - INFO - Saving checkpoint at 200 epochs
+05/03 21:22:43 - mmengine - INFO - Evaluating bbox...
+Loading and preparing results...
+DONE (t=0.00s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *bbox*
+DONE (t=0.01s).
+Accumulating evaluation results...
+DONE (t=0.01s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.128
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.273
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.106
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.125
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.127
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.202
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.202
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.450
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.202
+05/03 21:22:43 - mmengine - INFO - bbox_mAP_copypaste: 0.128 0.273 0.106 -1.000 0.450 0.125
+05/03 21:22:43 - mmengine - INFO - Epoch(val) [200][18/18]    coco/bbox_mAP: 0.1280  coco/bbox_mAP_50: 0.2730  coco/bbox_mAP_75: 0.1060  coco/bbox_mAP_s: -1.0000  coco/bbox_mAP_m: 0.4500  coco/bbox_mAP_l: 0.1250  data_time: 0.0145  time: 0.0229

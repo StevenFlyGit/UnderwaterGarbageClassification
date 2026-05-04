@@ -25,7 +25,7 @@ val_data_prefix = 'images\\val\\'           # 验证集图片目录
 # ======================== 覆盖模型与数据配置 ======================
 
 # 将训练轮数改为 100（按需修改数字）
-max_epochs = 120
+max_epochs = 200
 
 # 4. 修改模型输出头的类别数（覆盖 _base_ 里的默认 80 类）
 model = dict(
@@ -73,14 +73,14 @@ param_scheduler = [
         start_factor=0.0001, # 初始学习率倍率
         by_epoch=True,       # 按轮次计算
         begin=0,             # 从第 0 轮开始
-        end=5),              # 到第 5 轮结束
+        end=15),              # 到第 15 轮结束
     
     # 第二部分：正式训练阶段 (Decay)
     dict(
         type='CosineAnnealingLR', # 余弦退火衰减
         eta_min=0.0001,           # 训练结束时的最低学习率
-        begin=5,                  # 从第 5 轮开始（接续预热）
-        end=max_epochs,           # 到你设定的 120 轮结束
+        begin=15,                  # 从第 15 轮开始（接续预热）
+        end=max_epochs,           # 到你设定的 200 轮结束
         T_max=max_epochs,         # 整个余弦周期的跨度
         by_epoch=True,
         convert_to_iter_based=True) # 细化到每一次迭代都平滑下降
@@ -89,7 +89,7 @@ param_scheduler = [
 
 # 5. 覆盖训练集 DataLoader
 train_dataloader = dict(
-    batch_size=20, # 如果显存够大，可以调大到 32 或 64
+    batch_size=30, # 如果显存够大，可以调大到 32 或 64
     dataset=dict(
         type='YOLOv5CocoDataset', # 确保使用适合 COCO 格式的 Dataset 类
         data_root=data_root, # 这里填你存放数据集的根目录
