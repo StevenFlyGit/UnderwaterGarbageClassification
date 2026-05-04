@@ -1,9 +1,10 @@
 import re
 import matplotlib.pyplot as plt
 import pandas as pd
+from pathlib import Path
 
 # Load the log file
-log_path = 'train_log.log'
+log_path = (Path(__file__).resolve().parent / '..' / 'logs' / 'train_log.log').resolve()
 with open(log_path, 'r') as f:
     log_content = f.readlines()
 

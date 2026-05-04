@@ -1,5 +1,6 @@
 import re
 import matplotlib.pyplot as plt
+import pathlib as Path
 
 def parse_log(log_path):
     epochs = []
@@ -33,7 +34,8 @@ def parse_log(log_path):
     return iterations, base_lrs, lrs, losses, loss_clss, loss_bboxes, loss_dfls
 
 # Try parsing second_train_log.log
-iters, base_lrs, lrs, losses, loss_clss, loss_bboxes, loss_dfls = parse_log('train_log.log')
+log_path = (Path(__file__).resolve().parent / '..' / 'logs' / 'train_log.log').resolve()
+iters, base_lrs, lrs, losses, loss_clss, loss_bboxes, loss_dfls = parse_log(log_path)
 # iters是什么？它是一个列表，记录了训练过程中每个日志行对应的迭代次数（iteration）。
 # 在日志中，每当模型完成一个训练步骤（即处理一批数据）时，就会记录一次迭代。
 # 这个列表可以用来绘制学习率和损失随迭代次数变化的曲线，从而分析模型的训练过程。

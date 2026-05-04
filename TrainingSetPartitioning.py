@@ -3,7 +3,7 @@ import random
 import shutil
 
 # ================= 配置区 =================
-src_img_dir = './dataset/2023认领一个潜点水下垃圾照片 (水下&陆地,已脱敏)'    # 原始图片根目录（包含子文件夹）
+src_img_dir = './dataset/originPic'    # 原始图片根目录（包含子文件夹）
 src_txt_dir = './dataset/label'    # 所有 txt 标签放在该目录，文件名与图片同名（不含扩展名）
 save_dir = 'dataset/splitData'       # 自动生成的输出路径
 split_ratio = 0.9                  # 训练集占比
