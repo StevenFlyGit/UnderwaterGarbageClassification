@@ -57,8 +57,8 @@ pip install mmcv==2.0.0 -f https://download.openmmlab.com/mmcv/dist/cu118/torch2
 
 ```
 
-需要查询Pytorch版，请点击此处：[Pytorch版本匹配](https://pytorch.org/get-started/previous-versions/)
-需要查询GPU架构对应的计算能力，请点击此处：[英伟达GPU计算能力查询](https://developer.nvidia.cn/cuda/gpus)
+需要查询Pytorch版本，请点击此处：[Pytorch版本匹配](https://pytorch.org/get-started/previous-versions/) <br>
+需要查询GPU架构对应的计算能力，请点击此处：[英伟达GPU计算能力查询](https://developer.nvidia.cn/cuda/gpus)  <br>
 mmcv和Pytorch版本匹配查询，请点击此处：[mmcv版本查询](https://mmcv.readthedocs.io/en/latest/get_started/installation.html)
 
 
