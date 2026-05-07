@@ -1,10 +1,17 @@
 import re
+import argparse
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Parse training log file and generate charts.')
+parser.add_argument('--file-name', type=str, default='train_log.log',
+                    help='Name of the log file (default: train_log.log)')
+args = parser.parse_args()
+
 # Load the log file
-log_path = (Path(__file__).resolve().parent / '..' / 'logs' / 'train_log.log').resolve()
+log_path = (Path(__file__).resolve().parent / '..' / 'logs' / args.file_name).resolve()
 with open(log_path, 'r') as f:
     log_content = f.readlines()
 

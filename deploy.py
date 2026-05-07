@@ -1,4 +1,5 @@
 import os
+import argparse
 import cv2
 import numpy as np
 from fastapi import FastAPI, File, UploadFile
@@ -21,10 +22,30 @@ torch.set_num_threads(2) # 云服务器上使用，本地调试可注释
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 # --- 配置区 ---
-# 请确保路径指向你目前表现最好的模型权重文件和正确的配置文件
-CONFIG_PATH = 'configs/yolov8/ocean_trash_infer.py'
-CHECKPOINT_PATH = 'work_dirs/ocean_trash/best_coco_bbox_mAP_epoch_50.pth'
+# 默认路径（保留原始默认值）
+DEFAULT_CONFIG_PATH = 'configs/yolov8/ocean_trash_infer.py'
+DEFAULT_CHECKPOINT_PATH = 'work_dirs/ocean_trash/best_coco_bbox_mAP_epoch_50.pth'
 DEVICE = 'cuda:0' # 如果服务器没显卡则改为 'cpu'
+
+# 优先从环境变量读取，可在运行时通过启动参数覆盖
+CONFIG_PATH = os.environ.get('CONFIG_PATH', DEFAULT_CONFIG_PATH)
+CHECKPOINT_PATH = os.environ.get('CHECKPOINT_PATH', DEFAULT_CHECKPOINT_PATH)
+
+# 懒加载模型（避免在模块导入时立即初始化，便于通过启动参数或环境覆盖）
+model = None
+class_names = []
+
+def load_model(config_path, checkpoint_path, device=DEVICE):
+    """Load and initialize the detector into module-level globals."""
+    global model, class_names
+    if model is not None:
+        return
+    print(f"正在初始化模型... config={config_path}, checkpoint={checkpoint_path}, device={device}")
+    cfg = Config.fromfile(config_path)
+    cfg.custom_imports = dict(imports=['mmyolo.models'], allow_failed_imports=False)
+    model = init_detector(cfg, checkpoint_path, device=device)
+    class_names = model.dataset_meta.get('classes', [])
+    print("模型初始化成功！")
 
 # # 1. 关键一步：注册 MMYOLO 模块，解决 YOLODetector 找不到的问题
 # from mmyolo.utils import register_all_modules
@@ -45,13 +66,7 @@ cfg = Config.fromfile(CONFIG_PATH)
 # 在配置中强制添加自定义导入，确保 YOLODetector 被加载
 cfg.custom_imports = dict(imports=['mmyolo.models'], allow_failed_imports=False)
 
-print("正在初始化模型...")
-# 使用更底层的 init_detector 代替 DetInferencer，这样更稳定
-model = init_detector(cfg, CHECKPOINT_PATH, device=DEVICE)
-print("模型初始化成功！")
-
-# 提取出类别列表
-class_names = model.dataset_meta.get('classes', []) # 第二个参数是默认值，如果没有 'classes' 键则返回空列表
+# 注意：模型在首次调用 predict 时会进行懒加载（或在 __main__ 区块中通过 CLI 参数显式加载）
 
 app = FastAPI(title="海洋垃圾识别系统 API")
 
@@ -81,8 +96,12 @@ async def predict(file: UploadFile = File(...)):
     
     # 2. 模型推理
     # out_dir 设置为空，我们直接在内存中处理结果
+    # 如果模型尚未加载，则使用当前 CONFIG_PATH/CHECKPOINT_PATH 加载
+    if model is None:
+        load_model(CONFIG_PATH, CHECKPOINT_PATH, DEVICE)
+
     print('模型推理')
-    results = inference_detector(model, img) 
+    results = inference_detector(model, img)
 
     # 3. 解析结果
     # inference_detector 返回的是 DetDataSample（或列表），其预测信息在 .pred_instances
@@ -139,5 +158,24 @@ async def predict(file: UploadFile = File(...)):
     return {"status": "success", "data": output}
 
 if __name__ == "__main__":
-    # 启动服务，监听 8000 端口
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    parser = argparse.ArgumentParser(description="启动海洋垃圾识别 API")
+    parser.add_argument('--config-path', type=str, help='配置文件路径，覆盖默认 CONFIG_PATH')
+    parser.add_argument('--checkpoint-path', type=str, help='模型权重路径，覆盖默认 CHECKPOINT_PATH')
+    parser.add_argument('--device', type=str, help='推理设备，例如 cuda:0 或 cpu')
+    parser.add_argument('--host', type=str, default='0.0.0.0', help='服务绑定的主机地址')
+    parser.add_argument('--port', type=int, default=8000, help='服务监听端口')
+    args = parser.parse_args()
+
+    # 如果通过 CLI 提供了参数，则覆盖全局变量
+    if args.config_path:
+        CONFIG_PATH = args.config_path
+    if args.checkpoint_path:
+        CHECKPOINT_PATH = args.checkpoint_path
+    if args.device:
+        DEVICE = args.device
+
+    # 在启动前显式加载模型以确保服务就绪
+    load_model(CONFIG_PATH, CHECKPOINT_PATH, DEVICE)
+
+    # 启动服务，监听指定端口
+    uvicorn.run(app, host=args.host, port=args.port)

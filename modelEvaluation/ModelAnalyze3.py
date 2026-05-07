@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+import argparse
 
 import matplotlib.pyplot as plt
 
@@ -95,13 +96,19 @@ def parse_metrics_from_log(log_path):
 
 
 def main():
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Parse training log file and generate charts.')
+    parser.add_argument('--file-name', type=str, default='train_log.log',
+                        help='Name of the log file (default: train_log.log)')
+    args = parser.parse_args()
+    
     # log_path = Path(__file__).with_name('train_log.log')
 
     # log_path =  Path(__file__).parent 
     # log_path = log_path / '..' / 'logs' / 'train_log.log'  # 适用于Python 3.9及以上版本, 构建日志文件的完整路径
 
     # 适用于 Python 3.8 及以下：基于脚本目录来拼接相对路径，避免依赖运行时工作目录（cwd）
-    log_path = (Path(__file__).resolve().parent / '..' / 'logs' / 'train_log.log').resolve()
+    log_path = (Path(__file__).resolve().parent / '..' / 'logs' / args.file_name).resolve()
     print(f"Log file path: {log_path}")
 
     if not log_path.exists():

@@ -41,7 +41,20 @@ _base_ = './yolov8_m_syncbn_fast_8xb16-500e_coco.py'
 #     print(f'Error reading classes from {_classes_file}: {traceback.format_exc()}')
 
 
-class_name=('beer bottle', 'tire', 'plastic shell', 'gunny sack', 'plastic bottle', 'can', 'fishing gear', 'ointment', 'plastic bag', 'plastic packaging bag', 'glove', 'ground cage', 'fishing net')
+
+from pathlib import Path
+
+_classes_file = Path(__file__).resolve().with_name('classes.txt')
+
+if not _classes_file.is_file():
+    raise FileNotFoundError(f'classes.txt not found: {_classes_file}')
+
+with _classes_file.open('r', encoding='utf-8') as f:
+    class_name = tuple(line.strip() for line in f if line.strip())
+
+
+# class_name=('beer bottle', 'tire', 'plastic shell', 'gunny sack', 'plastic bottle', 'can', 'fishing gear', 'ointment', 'plastic bag', 'plastic packaging bag', 'glove', 'ground cage', 'fishing net')
+
 num_classes = len(class_name)
 metainfo = dict(classes=class_name)
 
