@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>无境深蓝 - SSE解析测试</title>
+    <style>
+        body { font-family: Arial; max-width: 900px; margin: 30px auto; padding: 20px; }
+        .debug { background: #f5f5f5; padding: 15px; border-radius: 5px; white-space: pre-wrap; font-size: 12px; max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        #result { margin-top: 20px; padding: 15px; background: #e9ecef; border-radius: 5px; display: none; }
+        .result-item { margin: 10px 0; padding: 10px; background: white; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>海洋垃圾溯源分析 - SSE解析测试</h1>
+    <button onclick="testAPI()">直接调用扣子API</button>
+    <button onclick="clearLog()">清空日志</button>
+    
+    <h3>调试日志:</h3>
+    <div id="debug" class="debug"></div>
+    
+    <h3>解析结果:</h3>
+    <div id="result"></div>
+
+    <script>
+        const API_URL = 'http://localhost:8080/stream_run';
+        const TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjBkYzU5M2IxLTNmYWUtNGM2NC1hYTJhLTc3MzgzMjQ0MzM2MSJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbIlVJSXRRTWlOdlA3RGVoN2k2b3ZtcWY1dk9rd1ZYWHZJIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzc3Nzk3NTAyLCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjM1NTcwMjE1MTA2OTA0MDY0Iiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjM1NTgyMTMyNDgzNTIyNjAyIn0.YhrF7AvMyR6-F1gc74MpO3Gjmyg5w5HI8_VfflUt0ytuQhUa7Yo8IrQwCLryjdAYdyDBRHQW26WSv1DZnU_BuT9SXgsYL-SYhFdq8d2KBizCmBm_3Y-4GTQal4ksJwfbQa3osUfJzFJp0fst_QFC-WuKtEw8ds4Id1AyyWVI9HUAXP8MRGs_Pnj9UlrJkpYh_6DM1jo_E0VmdVNAOHdw45D7BwN1YtxlAoVbG_KMY2W7nncaF8_HebL-M_P-RA_bxk65r39P-Jb5dzMb6kXJmLTufwFJ70qCP0l_Eq70nIeXoEwEtIexmya2eTUKzlR2utaY8cqlLzS9BXME3Es7zA';
+        const PROJECT_ID = '7635556815685730339';
+
+        function log(message, type = 'info') {
+            const div = document.getElementById('debug');
+            const span = document.createElement('span');
+            span.className = type;
+            span.textContent = `[${new Date().toLocaleTimeString()}] ${message}\n`;
+            div.appendChild(span);
+            div.scrollTop = div.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            document.getElementById('debug').innerHTML = '';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function displayResult(data) {
+            const div = document.getElementById('result');
+            div.style.display = 'block';
+            div.innerHTML = `
+                <div class="result-item">
+                    <h4>特征分析:</h4>
+                    <p>类型: ${data.features?.category || 'N/A'}</p>
+                    <p>材质: ${data.features?.material || 'N/A'}</p>
+                    <p>尺寸: ${data.features?.size || 'N/A'}</p>
+                    <p>文字: ${data.features?.文字 || 'N/A'}</p>
+                    <p>特征: ${(data.features?.特征 || []).join(', ')}</p>
+                </div>
+                
+                <div class="result-item">
+                    <h4>来源分析:</h4>
+                    <pre>${JSON.stringify(data.source_analysis, null, 2)}</pre>
+                </div>
+                
+                <div class="result-item">
+                    <h4>扩散路径:</h4>
+                    <p>方向: ${data.diffusion?.方向 || 'N/A'}</p>
+                    <p>范围: ${data.diffusion?.范围 || 'N/A'}</p>
+                    <p>时间线: ${data.diffusion?.时间线 || 'N/A'}</p>
+                    <p>高风险区域: ${(data.diffusion?.高风险区域 || []).join(', ')}</p>
+                </div>
+                
+                <div class="result-item">
+                    <h4>置信度: ${data.confidence || 'N/A'}</h4>
+                </div>
+            `;
+        }
+
+        function extractJsonFromText(text) {
+            if (!text) return null;
+            
+            // 清理文本
+            text = text.trim();
+            
+            // 如果文本以 { 开头，尝试直接解析
+            if (text.startsWith('{')) {
+                try {
+                    return JSON.parse(text);
+                } catch (e) {}
+            }
+            
+            // 查找JSON对象
+            const jsonMatch = text.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    return JSON.parse(jsonMatch[0]);
+                } catch (e) {}
+            }
+            
+            return null;
+        }
+
+        async function testAPI() {
+            log('开始测试API调用...', 'info');
+            
+            const sessionId = 'test-' + Date.now();
+            
+            const payload = {
+                "content": {
+                    "query": {
+                        "prompt": [{
+                            "type": "text",
+                            "content": {
+                                "text": `你是一个专业的海洋垃圾溯源分析专家。请分析图片中的垃圾并提供JSON格式报告。`
+                            }
+                        }]
+                    }
+                },
+                "type": "query",
+                "session_id": sessionId,
+                "project_id": PROJECT_ID
+            };
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + TOKEN,
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify(payload)
+            };
+
+            try {
+                log(`发送请求到: ${API_URL}`, 'info');
+                
+                const response = await fetch(API_URL, options);
+                
+                log(`HTTP状态: ${response.status}`, response.ok ? 'success' : 'error');
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log(`API错误: ${errorText}`, 'error');
+                    return;
+                }
+
+                if (!response.body) {
+                    log('响应体为空', 'error');
+                    return;
+                }
+
+                log('开始读取SSE流...', 'info');
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+                let allAnswerData = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) {
+                        log('SSE流读取完成', 'info');
+                        break;
+                    }
+                    
+                    const text = decoder.decode(value);
+                    buffer += text;
+                    
+                    // 按行解析SSE - 按照用户提供的格式
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop() || '';
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const jsonStr = line.slice(6);
+                            log('收到数据: ' + jsonStr.substring(0, 100), 'info');
+                            
+                            try {
+                                const data = JSON.parse(jsonStr);
+                                log('解析成功, type=' + data.type, 'info');
+                                
+                                // 提取answer内容
+                                if (data.content && data.content.answer) {
+                                    allAnswerData += data.content.answer;
+                                    log('answer片段: ' + data.content.answer, 'info');
+                                    
+                                    // 尝试解析已收集的数据
+                                    if (allAnswerData.length > 10) {
+                                        const result = extractJsonFromText(allAnswerData);
+                                        if (result) {
+                                            log('✅ 成功解析JSON结果！', 'success');
+                                            displayResult(result);
+                                            return;
+                                        }
+                                    }
+                                }
+                            } catch (e) {
+                                log('JSON解析错误: ' + e.message, 'error');
+                            }
+                        }
+                    }
+                }
+                
+                // 流结束后尝试解析收集的数据
+                log('流结束，收集的数据: ' + allAnswerData, 'info');
+                const finalResult = extractJsonFromText(allAnswerData);
+                if (finalResult) {
+                    log('✅ 从收集数据中解析成功！', 'success');
+                    displayResult(finalResult);
+                } else {
+                    log('❌ 无法解析结果', 'error');
+                }
+
+            } catch (error) {
+                log(`❌ 请求失败: ${error.message}`, 'error');
+                log('可能原因: CORS问题或网络问题', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
